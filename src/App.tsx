@@ -1,31 +1,24 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { NavigationContainer } from '@react-navigation/native';
+import { RootNavigator } from './navigation/RootNavigator';
+import { StatusBar } from 'react-native';
 
 const App = () => {
   return (
-    <View style={styles.container}>
-      <Text style={styles.text}>Hello Noyon</Text>
-      <Text style={styles.sub}>My First React Native App</Text>
-    </View>
+    // 1. Safe Area Provider handles notches/dynamic islands
+    <SafeAreaProvider>
+      
+      {/* 2. Status Bar configuration (Light content for dark backgrounds) */}
+      <StatusBar barStyle="light-content" backgroundColor="#0D1F2D" />
+
+      {/* 3. Navigation Container (Similar to MaterialApp in Flutter) */}
+      <NavigationContainer>
+        <RootNavigator />
+      </NavigationContainer>
+      
+    </SafeAreaProvider>
   );
 };
 
 export default App;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#ffffff',
-  },
-  text: {
-    fontSize: 28,
-    fontWeight: 'bold',
-  },
-  sub: {
-    fontSize: 18,
-    marginTop: 10,
-    color: 'gray',
-  },
-});
