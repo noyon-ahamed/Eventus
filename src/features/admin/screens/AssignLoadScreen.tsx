@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
-import { 
-  View, 
-  Text, 
-  StyleSheet, 
-  TextInput, 
-  TouchableOpacity, 
-  ScrollView, 
-  StatusBar 
+import {
+  View,
+  Text,
+  StyleSheet,
+  TextInput,
+  TouchableOpacity,
+  ScrollView,
+  StatusBar,
+  Image,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -22,16 +23,21 @@ export const AssignLoadScreen = ({ navigation }: any) => {
 
       {/* 1. Header */}
       <View style={styles.header}>
-        <TouchableOpacity style={styles.backBtn} onPress={() => navigation.goBack()}>
+        <TouchableOpacity
+          style={styles.backBtn}
+          onPress={() => navigation.goBack()}
+        >
           <Icon name="arrow-back" size={24} color="#0D1F2D" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Assign Load</Text>
         {/* Empty View for alignment */}
-        <View style={{ width: 40 }} /> 
+        <View style={{ width: 40 }} />
       </View>
 
-      <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
-        
+      <ScrollView
+        contentContainerStyle={styles.scrollContent}
+        showsVerticalScrollIndicator={false}
+      >
         {/* 2. Route Preview Section */}
         <Text style={styles.sectionLabel}>Route Preview</Text>
         <View style={styles.mapPlaceholder}>
@@ -40,37 +46,46 @@ export const AssignLoadScreen = ({ navigation }: any) => {
 
         {/* 3. Load Details Form */}
         <Text style={styles.sectionLabel}>Load Details</Text>
-        
+
         <View style={styles.formContainer}>
-          
           {/* Pickup Location */}
           <Text style={styles.inputLabel}>Pickup Location</Text>
           <View style={styles.inputWrapper}>
-            <TextInput 
-              placeholder="Enter Pickup Address..." 
+            <TextInput
+              placeholder="Enter Pickup Address..."
               placeholderTextColor="#94A3B8"
               style={styles.textInput}
             />
-            <Icon name="location-outline" size={20} color="#94A3B8" style={styles.inputIcon} />
+            <Icon
+              name="location-outline"
+              size={20}
+              color="#94A3B8"
+              style={styles.inputIcon}
+            />
           </View>
 
           {/* Drop-off Location */}
           <Text style={styles.inputLabel}>Drop-off Location</Text>
           <View style={styles.inputWrapper}>
-            <TextInput 
-              placeholder="Enter Drop-off address" 
+            <TextInput
+              placeholder="Enter Drop-off address"
               placeholderTextColor="#94A3B8"
               style={styles.textInput}
             />
-            <Icon name="location-outline" size={20} color="#94A3B8" style={styles.inputIcon} />
+            <Icon
+              name="location-outline"
+              size={20}
+              color="#94A3B8"
+              style={styles.inputIcon}
+            />
           </View>
 
           {/* Row: Weight & Rate */}
           <View style={styles.row}>
             <View style={styles.halfInput}>
               <Text style={styles.inputLabel}>Weight (lbs)</Text>
-              <TextInput 
-                placeholder="0" 
+              <TextInput
+                placeholder="0"
                 placeholderTextColor="#94A3B8"
                 keyboardType="numeric"
                 style={styles.simpleInput}
@@ -80,8 +95,8 @@ export const AssignLoadScreen = ({ navigation }: any) => {
             </View>
             <View style={styles.halfInput}>
               <Text style={styles.inputLabel}>Rate ($)</Text>
-              <TextInput 
-                placeholder="0" 
+              <TextInput
+                placeholder="0"
                 placeholderTextColor="#94A3B8"
                 keyboardType="numeric"
                 style={styles.simpleInput}
@@ -94,11 +109,22 @@ export const AssignLoadScreen = ({ navigation }: any) => {
           {/* Pickup Date */}
           <Text style={styles.inputLabel}>Pickup Date</Text>
           <View style={styles.inputWrapper}>
-             <MaterialIcon name="calendar-blank-outline" size={20} color="#0D1F2D" style={[styles.inputIcon, {left: 14}]} />
-            <TextInput 
-              placeholder="mm/dd/yyyy" 
+            <Image
+              source={require('../../../assets/icons/calendar.png')}
+              style={{
+                position: 'absolute',
+                left: 14,
+                width: 20,
+                height: 20,
+                // resizeMode: 'contain',
+                tintColor: '#0D1F2D',
+                zIndex: 1,
+              }}
+            />
+            <TextInput
+              placeholder="mm/dd/yyyy"
               placeholderTextColor="#0D1F2D"
-              style={[styles.textInput, { paddingLeft: 44 }]} 
+              style={[styles.textInput, { paddingLeft: 44 }]}
             />
           </View>
 
@@ -108,14 +134,12 @@ export const AssignLoadScreen = ({ navigation }: any) => {
             <Text style={styles.selectText}>Choose Driver</Text>
             <Icon name="chevron-down" size={20} color="#94A3B8" />
           </TouchableOpacity>
-
         </View>
 
         {/* 4. Action Button */}
         <TouchableOpacity style={styles.mainButton}>
           <Text style={styles.mainButtonText}>Assign Load</Text>
         </TouchableOpacity>
-
       </ScrollView>
     </SafeAreaView>
   );
@@ -206,6 +230,7 @@ const styles = StyleSheet.create({
   inputIcon: {
     position: 'absolute',
     right: 14,
+    color: '#0D1F2D',
   },
   row: {
     flexDirection: 'row',

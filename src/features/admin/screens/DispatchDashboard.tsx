@@ -121,29 +121,53 @@ export const DispatchDashboard = () => {
           <Text style={styles.cardTitle}>Weekly Loads Overview</Text>
           <View style={styles.legendContainer}>
             <View style={styles.legendItem}>
+              <Text style={styles.legendLabel}>This Month</Text>
               <Text style={styles.legendValue}>60</Text>
-              <Text style={styles.legendLabel}>Current Month</Text>
+              <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 4 }}>
+                <Text style={{ color: '#10B981', fontSize: 12, marginRight: 4 }}>↗</Text>
+                <Text style={{ color: '#10B981', fontSize: 12, fontWeight: '600' }}>0.20%</Text>
+              </View>
             </View>
             <View style={styles.legendItem}>
-              <Text style={styles.legendValue}>$50</Text>
               <Text style={styles.legendLabel}>Last Month</Text>
+              <Text style={styles.legendValue}>$50</Text>
+              <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 4 }}>
+                <Text style={{ color: '#EF4444', fontSize: 12, marginRight: 4 }}>↘</Text>
+                <Text style={{ color: '#EF4444', fontSize: 12, fontWeight: '600' }}>1.04%</Text>
+              </View>
             </View>
           </View>
 
           <BarChart
             data={barData}
-            barWidth={12}
-            spacing={14}
+            barWidth={16}
+            spacing={8}
             roundedTop
             roundedBottom
-            hideRules
+            hideRules={false}
+            rulesType="dashed"
+            rulesColor="#E5E7EB"
+            rulesThickness={1}
             xAxisThickness={0}
             yAxisThickness={0}
-            yAxisTextStyle={{ color: 'gray' }}
-            noOfSections={3}
-            height={150}
+            yAxisTextStyle={{ color: '#9CA3AF', fontSize: 12 }}
+            noOfSections={4}
+            maxValue={40}
+            height={180}
             width={280}
+            showGradient={false}
           />
+
+          <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 16, gap: 20 }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <View style={{ width: 8, height: 8, borderRadius: 4, backgroundColor: '#6366F1', marginRight: 6 }} />
+              <Text style={{ color: '#64748B', fontSize: 12, fontWeight: '600' }}>Current Month</Text>
+            </View>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <View style={{ width: 8, height: 8, borderRadius: 4, backgroundColor: '#C7D2FE', marginRight: 6 }} />
+              <Text style={{ color: '#64748B', fontSize: 12, fontWeight: '600' }}>Last Month</Text>
+            </View>
+          </View>
         </View>
 
         {/* 4. REVENUE VS ORDERS CHART */}
@@ -151,11 +175,11 @@ export const DispatchDashboard = () => {
           <Text style={styles.cardTitle}>Revenue vs Orders</Text>
           <View style={[styles.legendContainer, { marginBottom: 20 }]}>
             <View style={{ flexDirection: 'row', alignItems: 'center', marginRight: 15 }}>
-              <View style={[styles.dot, { backgroundColor: '#4E5BF2' }]} />
+              <View style={[styles.dot, { backgroundColor: '#6366F1' }]} />
               <Text style={styles.legendText}>Revenue</Text>
             </View>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <View style={[styles.dot, { backgroundColor: '#00E5FF' }]} />
+              <View style={[styles.dot, { backgroundColor: '#10B981' }]} />
               <Text style={styles.legendText}>Orders</Text>
             </View>
           </View>
@@ -163,25 +187,75 @@ export const DispatchDashboard = () => {
           <LineChart
             data={revenueData}
             data2={ordersData}
-            height={180}
+            height={200}
+            width={280}
             showVerticalLines={false}
-            spacing={44}
-            initialSpacing={0}
-            color1="#4E5BF2"
-            color2="#00E5FF"
-            textColor1="green"
-            dataPointsHeight={6}
-            dataPointsWidth={6}
-            dataPointsColor1="#4E5BF2"
-            dataPointsColor2="#00E5FF"
-            textShiftY={-2}
-            textShiftX={-5}
-            textFontSize={13}
+            spacing={40}
+            initialSpacing={20}
+            color1="#6366F1"
+            color2="#10B981"
+            dataPointsHeight={8}
+            dataPointsWidth={8}
+            dataPointsColor1="#6366F1"
+            dataPointsColor2="#10B981"
             thickness={3}
-            hideRules
+            hideRules={false}
+            rulesType="dashed"
+            rulesColor="#E5E7EB"
+            rulesThickness={1}
             yAxisThickness={0}
             xAxisThickness={0}
+            yAxisTextStyle={{ color: '#9CA3AF', fontSize: 12 }}
+            xAxisLabelTexts={['Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug']}
+            xAxisLabelTextStyle={{ color: '#9CA3AF', fontSize: 12 }}
             curved
+            areaChart
+            startFillColor1="rgba(99, 102, 241, 0.1)"
+            startFillColor2="rgba(16, 185, 129, 0.1)"
+            endFillColor1="rgba(99, 102, 241, 0)"
+            endFillColor2="rgba(16, 185, 129, 0)"
+            startOpacity={0.4}
+            endOpacity={0}
+            noOfSections={4}
+            maxValue={40}
+            yAxisLabelPrefix="$"
+            yAxisLabelSuffix="k"
+            pointerConfig={{
+              pointerStripHeight: 200,
+              pointerStripColor: '#E5E7EB',
+              pointerStripWidth: 1,
+              pointerColor: '#6366F1',
+              radius: 6,
+              pointerLabelWidth: 100,
+              pointerLabelHeight: 90,
+              activatePointersOnLongPress: false,
+              autoAdjustPointerLabelPosition: true,
+              pointerLabelComponent: (items: any) => {
+                return (
+                  <View
+                    style={{
+                      height: 90,
+                      width: 100,
+                      justifyContent: 'center',
+                      backgroundColor: '#1F2937',
+                      borderRadius: 8,
+                      padding: 10,
+                    }}>
+                    <Text style={{ color: 'white', fontSize: 12, fontWeight: '600', marginBottom: 4 }}>
+                      Jun, 2021
+                    </Text>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 2 }}>
+                      <View style={{ width: 8, height: 8, borderRadius: 4, backgroundColor: '#6366F1', marginRight: 6 }} />
+                      <Text style={{ color: 'white', fontSize: 11 }}>Revenue</Text>
+                    </View>
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                      <View style={{ width: 8, height: 8, borderRadius: 4, backgroundColor: '#10B981', marginRight: 6 }} />
+                      <Text style={{ color: 'white', fontSize: 11 }}>Orders</Text>
+                    </View>
+                  </View>
+                );
+              },
+            }}
           />
         </View>
 

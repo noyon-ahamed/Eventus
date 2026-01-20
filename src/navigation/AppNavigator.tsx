@@ -1,10 +1,10 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { ROUTES } from './routes';
-import { DispatchDashboard } from '../features/dispatch/screens/DispatchDashboard';
-import { LoadBoardScreen } from '../features/dispatch/screens/LoadBoardScreen';
-import { AssignLoadScreen } from '../features/dispatch/screens/AssignLoadScreen';
-import { ActiveDriversScreen } from '../features/dispatch/screens/ActiveDriversScreen';
+import { DispatchDashboard } from '../features/admin/screens/DispatchDashboard';
+import { LoadBoardScreen } from '../features/admin/screens/LoadBoardScreen';
+import { AssignLoadScreen } from '../features/admin/screens/AssignLoadScreen';
+import { ActiveDriversScreen } from '../features/admin/screens/ActiveDriversScreen';
 
 const Stack = createNativeStackNavigator();
 
