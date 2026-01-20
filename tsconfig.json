@@ -1,7 +1,5 @@
 {
   "compilerOptions": {
-    "jsx": "react",
-    /* Basic Options */
     "target": "esnext",
     "module": "commonjs",
     "lib": ["es2017"],
@@ -10,27 +8,21 @@
     "noEmit": true,
     "isolatedModules": true,
     "strict": true,
-
-    /* Module Resolution Options */
     "moduleResolution": "node",
-    "baseUrl": "./",
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
     "resolveJsonModule": true,
-
-    /* Preserving your existing types */
-    "types": ["jest"]
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    }
   },
-  "include": [
-    "**/*.ts",
-    "**/*.tsx"
-  ],
+  "include": ["**/*.ts", "**/*.tsx"],
   "exclude": [
     "node_modules",
     "babel.config.js",
     "metro.config.js",
-    "jest.config.js",
-    "**/Pods"
+    "jest.config.js"
   ]
 }
