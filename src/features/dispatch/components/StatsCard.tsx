@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Image, ImageSourcePropType } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 interface StatsCardProps {
@@ -8,23 +8,33 @@ interface StatsCardProps {
   trendPercentage: string;
   trendValue?: string; // e.g., "+$6k t"
   isPositive?: boolean;
-  iconName: string;
+  iconName?: string; // For vector icons
+  iconSource?: ImageSourcePropType; // For custom images
 }
 
-export const StatsCard = ({ 
-  label, 
-  value, 
-  trendPercentage, 
-  trendValue, 
-  iconName, 
-  isPositive = true 
+export const StatsCard = ({
+  label,
+  value,
+  trendPercentage,
+  trendValue,
+  iconName,
+  iconSource,
+  isPositive = true
 }: StatsCardProps) => {
   return (
     <View style={styles.card}>
       {/* Header: Icon + Label */}
       <View style={styles.headerRow}>
         <View style={styles.iconContainer}>
-          <Icon name={iconName} size={22} color="#0D1F2D" />
+          {iconSource ? (
+            <Image
+              source={iconSource}
+              style={styles.iconImage}
+              resizeMode="contain"
+            />
+          ) : (
+            <Icon name={iconName || 'help-circle'} size={22} color="#0D1F2D" />
+          )}
         </View>
         <Text style={styles.label} numberOfLines={2}>{label}</Text>
       </View>
@@ -34,10 +44,10 @@ export const StatsCard = ({
 
       {/* Footer: Trend */}
       <View style={styles.trendRow}>
-        <Icon 
-          name={isPositive ? "arrow-top-right" : "arrow-bottom-right"} 
-          size={16} 
-          color={isPositive ? "#10B981" : "#EF4444"} 
+        <Icon
+          name={isPositive ? "arrow-top-right" : "arrow-bottom-right"}
+          size={16}
+          color={isPositive ? "#10B981" : "#EF4444"}
         />
         <Text style={[styles.trendText, { color: isPositive ? "#10B981" : "#EF4444" }]}>
           {trendPercentage}
@@ -56,7 +66,7 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     padding: 16,
     // Ensure the card fills the wrapper provided by the parent
-    flex: 1, 
+    flex: 1,
     minHeight: 140,
     justifyContent: 'space-between',
     // Shadow for depth
@@ -78,6 +88,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 12,
+  },
+  iconImage: {
+    width: 24,
+    height: 24,
   },
   label: {
     fontSize: 14,
