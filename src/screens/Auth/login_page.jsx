@@ -8,8 +8,10 @@ import {
   StyleSheet,
   Image,
 } from 'react-native';
+import { useAuth } from '../../navigation/AuthContext';
 
 const LoginPage = ({ navigation }) => {
+  const { login } = useAuth();
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   const [email, setEmail] = useState('');
@@ -18,8 +20,10 @@ const LoginPage = ({ navigation }) => {
   const handleLogin = () => {
     if (email && password) {
       console.log('Login clicked');
+      login(); // Trigger authentication
     }
   };
+
 
   const goToForgotPassword = () => {
     navigation.navigate('ForgotPassword');

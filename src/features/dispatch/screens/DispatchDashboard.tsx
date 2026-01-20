@@ -190,7 +190,7 @@ export const DispatchDashboard = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F3F4F6', 
+    backgroundColor: '#0D1F2D', 
   },
   scrollContent: {
     padding: 20,
