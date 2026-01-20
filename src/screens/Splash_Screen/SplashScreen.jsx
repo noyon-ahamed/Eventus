@@ -18,7 +18,7 @@ const SplashScreen = ({ navigation }) => {
         style={styles.logo}
         resizeMode="contain"
       />
-      <Text style={styles.text}>Hello Noyon</Text>
+
     </View>
   );
 };
@@ -33,8 +33,8 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   logo: {
-    width: 150,
-    height: 150,
+    width: 350,
+    height: 350,
     marginBottom: 12,
   },
   text: {
