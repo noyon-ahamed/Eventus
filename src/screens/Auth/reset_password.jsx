@@ -1,13 +1,19 @@
 import React, { useState } from 'react';
+import KeyIcon from '../../assets/images/all_icons/key.png';
+import EyeIcon from '../../assets/images/all_icons/eye.png';
+import ResetPasswordImg from '../../assets/images/all_icons/reset_password.png';
 import {
   View,
   Text,
   TextInput,
   TouchableOpacity,
-  ScrollView,
   StyleSheet,
+  Image,
   ActivityIndicator,
+  Dimensions,
 } from 'react-native';
+
+const { width } = Dimensions.get('window');
 
 const ResetPasswordPage = ({ navigation }) => {
   const [isNewPasswordVisible, setIsNewPasswordVisible] = useState(false);
@@ -31,128 +37,98 @@ const ResetPasswordPage = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
-        <View style={styles.content}>
-          {/* Back Button */}
-          <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-            <Text style={styles.backIcon}>←</Text>
-          </TouchableOpacity>
+      {/* Back Button */}
+      <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+        <Text style={styles.backIcon}>←</Text>
+      </TouchableOpacity>
 
-          <View style={styles.spacer60} />
+      {/* Centered Card Container */}
+      <View style={styles.centerWrapper}>
+        <View style={styles.cardWrapper}>
+          {/* Top Illustration */}
+          <View style={styles.topIllustration}>
+            <Image 
+              source={ResetPasswordImg} 
+              style={styles.illustrationImage}
+              resizeMode="contain"
+            />
+          </View>
 
-          {/* Card Container */}
-          <View style={styles.card}>
-            {/* Illustration */}
-            <View style={styles.illustrationContainer}>
-              <View style={styles.circle}>
-                <View style={styles.shieldContainer}>
-                  <View style={styles.shield}>
-                    <View style={styles.shieldTop} />
-                    <View style={styles.shieldBottom} />
-                  </View>
-                  <View style={styles.lockCircle}>
-                    <View style={styles.lockBody}>
-                      <View style={styles.lockArc} />
-                    </View>
-                  </View>
-                  <View style={styles.keyCircle}>
-                    <Text style={styles.keyIcon}>🔑</Text>
-                  </View>
-                </View>
-                {/* Decorative Elements */}
-                <View style={[styles.decorDot, { top: 20, left: 30 }]} />
-                <View style={[styles.decorDot, { top: 40, right: 40 }]} />
-                <View style={[styles.decorDot, { bottom: 30, left: 50 }]} />
-                <View style={[styles.decorLine, { top: 50, left: 20 }]} />
-                <View style={[styles.decorLine, { bottom: 40, right: 30 }]} />
-              </View>
-            </View>
-
-            <View style={styles.spacer32} />
-
+          {/* White Card */}
+          <View style={styles.whiteCard}>
             {/* Title */}
             <Text style={styles.title}>Reset Password</Text>
 
-            <View style={styles.spacer8} />
-
             {/* Subtitle */}
             <Text style={styles.subtitle}>
-              Set a name for your profile, here's{'\n'}
+              Set a name for your profile, here's{'\n'}the password
             </Text>
 
-            <View style={styles.spacer32} />
-
             {/* New Password Field */}
-            <Text style={styles.label}>New Password</Text>
-            <View style={styles.inputContainer}>
-              <Text style={styles.inputIconText}>🔑</Text>
-              <TextInput
-                style={styles.input}
-                placeholder="••••••••"
-                placeholderTextColor="#C4C4C4"
-                value={newPassword}
-                onChangeText={setNewPassword}
-                secureTextEntry={!isNewPasswordVisible}
-              />
-              <TouchableOpacity
-                style={styles.eyeIcon}
-                onPress={() => setIsNewPasswordVisible(!isNewPasswordVisible)}
-              >
-                <Text style={styles.eyeIconText}>
-                  {isNewPasswordVisible ? '👁️' : '👁️‍🗨️'}
-                </Text>
-              </TouchableOpacity>
+            <View style={styles.fieldSection}>
+              <Text style={styles.label}>New Password</Text>
+              <View style={styles.inputContainer}>
+                <Image source={KeyIcon} style={styles.inputIcon} />
+                <TextInput
+                  style={styles.input}
+                  placeholder="••••••••"
+                  placeholderTextColor="#C4C4C4"
+                  value={newPassword}
+                  onChangeText={setNewPassword}
+                  secureTextEntry={!isNewPasswordVisible}
+                />
+                <TouchableOpacity
+                  style={styles.eyeIcon}
+                  onPress={() => setIsNewPasswordVisible(!isNewPasswordVisible)}
+                >
+                  <Image source={EyeIcon} style={styles.eyeIconImg} />
+                </TouchableOpacity>
+              </View>
             </View>
-
-            <View style={styles.spacer24} />
 
             {/* Confirm Password Field */}
-            <Text style={styles.label}>Confirm Password</Text>
-            <View style={styles.inputContainer}>
-              <Text style={styles.inputIconText}>🔑</Text>
-              <TextInput
-                style={styles.input}
-                placeholder="••••••••"
-                placeholderTextColor="#C4C4C4"
-                value={confirmPassword}
-                onChangeText={setConfirmPassword}
-                secureTextEntry={!isConfirmPasswordVisible}
-              />
-              <TouchableOpacity
-                style={styles.eyeIcon}
-                onPress={() => setIsConfirmPasswordVisible(!isConfirmPasswordVisible)}
-              >
-                <Text style={styles.eyeIconText}>
-                  {isConfirmPasswordVisible ? '👁️' : '👁️‍🗨️'}
-                </Text>
-              </TouchableOpacity>
+            <View style={styles.fieldSection}>
+              <Text style={styles.label}>Confirm Password</Text>
+              <View style={styles.inputContainer}>
+                <Image source={KeyIcon} style={styles.inputIcon} />
+                <TextInput
+                  style={styles.input}
+                  placeholder="••••••••"
+                  placeholderTextColor="#C4C4C4"
+                  value={confirmPassword}
+                  onChangeText={setConfirmPassword}
+                  secureTextEntry={!isConfirmPasswordVisible}
+                />
+                <TouchableOpacity
+                  style={styles.eyeIcon}
+                  onPress={() => setIsConfirmPasswordVisible(!isConfirmPasswordVisible)}
+                >
+                  <Image source={EyeIcon} style={styles.eyeIconImg} />
+                </TouchableOpacity>
+              </View>
             </View>
-
-            <View style={styles.spacer32} />
 
             {/* Submit Button */}
             <TouchableOpacity
-              style={[styles.submitButton, !isFormValid && styles.submitButtonDisabled]}
+              style={[styles.submitButton, isFormValid && styles.submitButtonActive]}
               onPress={handleSubmit}
               disabled={!isFormValid || isSubmitting}
-              activeOpacity={0.8}
+              activeOpacity={0.9}
             >
               {isSubmitting ? (
                 <View style={styles.submitLoading}>
                   <ActivityIndicator color="white" size="small" />
-                  <Text style={styles.submitButtonText}>  Submiting</Text>
+                  <Text style={styles.submitButtonText}>  Submitting</Text>
                 </View>
               ) : (
-                <Text style={[styles.submitButtonText, !isFormValid && styles.submitButtonTextDisabled]}>
-                  Submiting
+                <Text style={[styles.buttonText, isFormValid && styles.buttonTextActive]}>
+                  Submit
                 </Text>
               )}
             </TouchableOpacity>
-
-            <View style={styles.spacer40} />
           </View>
         </View>
-      </ScrollView>
+      </View>
     </View>
   );
 };
@@ -162,21 +138,17 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#F5F5F5',
   },
-  scrollView: {
-    flex: 1,
-  },
-  content: {
-    paddingHorizontal: 24,
-    paddingTop: 48,
-    paddingBottom: 40,
-  },
   backButton: {
+    position: 'absolute',
+    top: 60,
+    left: 24,
     width: 44,
     height: 44,
     backgroundColor: 'white',
     borderRadius: 22,
     justifyContent: 'center',
     alignItems: 'center',
+    zIndex: 100,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.08,
@@ -186,204 +158,128 @@ const styles = StyleSheet.create({
   backIcon: {
     fontSize: 20,
     color: '#000',
-    fontWeight: '400',
   },
-  spacer60: {
-    height: 60,
+  centerWrapper: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingTop: 40,
   },
-  spacer40: {
-    height: 40,
+  cardWrapper: {
+    position: 'relative',
+    alignItems: 'center',
   },
-  spacer32: {
-    height: 32,
+  topIllustration: {
+    position: 'absolute',
+    top: -100,
+    zIndex: 10,
   },
-  spacer24: {
-    height: 24,
+  illustrationImage: {
+    width: 140,
+    height: 220,
   },
-  spacer8: {
-    height: 8,
-  },
-  card: {
+  whiteCard: {
+    width: width - 48,
     backgroundColor: 'white',
-    borderRadius: 24,
-    padding: 24,
+    borderRadius: 32,
+    paddingTop: 130,
+    paddingHorizontal: 28,
+    paddingBottom: 60,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.08,
-    shadowRadius: 12,
-    elevation: 4,
-  },
-  illustrationContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 20,
-  },
-  circle: {
-    width: 160,
-    height: 160,
-    borderRadius: 80,
-    backgroundColor: '#F8F8F8',
-    justifyContent: 'center',
-    alignItems: 'center',
-    position: 'relative',
-  },
-  shieldContainer: {
-    position: 'relative',
-    width: 80,
-    height: 90,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  shield: {
-    width: 60,
-    height: 70,
-    position: 'relative',
-  },
-  shieldTop: {
-    width: 60,
-    height: 50,
-    backgroundColor: '#D4A441',
-    borderTopLeftRadius: 30,
-    borderTopRightRadius: 30,
-  },
-  shieldBottom: {
-    width: 0,
-    height: 0,
-    borderLeftWidth: 30,
-    borderRightWidth: 30,
-    borderTopWidth: 20,
-    borderLeftColor: 'transparent',
-    borderRightColor: 'transparent',
-    borderTopColor: '#D4A441',
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-  },
-  lockCircle: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
-    backgroundColor: '#8BC4C4',
-    justifyContent: 'center',
-    alignItems: 'center',
-    position: 'absolute',
-    top: 20,
-  },
-  lockBody: {
-    width: 14,
-    height: 14,
-    backgroundColor: 'white',
-    borderRadius: 3,
-    position: 'relative',
-  },
-  lockArc: {
-    width: 10,
-    height: 8,
-    borderWidth: 2,
-    borderColor: 'white',
-    borderTopLeftRadius: 5,
-    borderTopRightRadius: 5,
-    borderBottomWidth: 0,
-    position: 'absolute',
-    top: -8,
-    left: 0,
-  },
-  keyCircle: {
-    width: 28,
-    height: 28,
-    borderRadius: 14,
-    backgroundColor: '#8BC4C4',
-    justifyContent: 'center',
-    alignItems: 'center',
-    position: 'absolute',
-    bottom: 5,
-    right: -10,
-  },
-  keyIcon: {
-    fontSize: 14,
-  },
-  decorDot: {
-    width: 6,
-    height: 6,
-    borderRadius: 3,
-    backgroundColor: '#FFC670',
-    position: 'absolute',
-  },
-  decorLine: {
-    width: 12,
-    height: 2,
-    backgroundColor: '#FFC670',
-    borderRadius: 1,
-    position: 'absolute',
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.06,
+    shadowRadius: 16,
+    elevation: 5,
   },
   title: {
     fontSize: 24,
     fontWeight: '700',
-    color: '#000000',
+    color: '#000',
     textAlign: 'center',
-    letterSpacing: -0.3,
+    marginBottom: 12,
   },
   subtitle: {
-    fontSize: 13,
-    color: '#B0B0B0',
-    fontWeight: '400',
+    fontSize: 14,
+    color: '#999999',
     textAlign: 'center',
-    lineHeight: 20,
+    lineHeight: 21,
+    marginBottom: 40,
+  },
+  fieldSection: {
+    marginBottom: 24,
   },
   label: {
-    fontSize: 14,
+    fontSize: 15,
     fontWeight: '600',
-    color: '#000000',
-    marginBottom: 8,
+    color: '#000',
+    marginBottom: 10,
   },
   inputContainer: {
+    height: 58,
+    backgroundColor: 'white',
+    borderRadius: 29,
+    borderWidth: 1.5,
+    borderColor: '#E8E8E8',
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#F8F8F8',
-    borderRadius: 24,
-    paddingHorizontal: 20,
-    height: 56,
-    borderWidth: 1,
-    borderColor: '#E8E8E8',
+    paddingLeft: 20,
+    paddingRight: 20,
   },
-  inputIconText: {
-    fontSize: 20,
+  inputIcon: {
+    width: 20,
+    height: 20,
+    tintColor: '#AAAAAA',
     marginRight: 12,
+    resizeMode: 'contain',
   },
   input: {
     flex: 1,
-    fontSize: 14,
-    color: '#000000',
-    paddingVertical: 0,
+    fontSize: 15,
+    color: '#000',
+    padding: 0,
   },
   eyeIcon: {
     padding: 8,
   },
-  eyeIconText: {
-    fontSize: 20,
+  eyeIconImg: {
+    width: 20,
+    height: 20,
+    tintColor: '#AAAAAA',
+    resizeMode: 'contain',
   },
   submitButton: {
     width: '100%',
-    height: 56,
-    backgroundColor: '#D4A441',
-    borderRadius: 28,
+    height: 58,
+    borderRadius: 29,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: '#E0E0E0',
+    marginTop: 8,
   },
-  submitButtonDisabled: {
-    backgroundColor: '#E8E8E8',
+  submitButtonActive: {
+    backgroundColor: '#D4A441',
+    shadowColor: '#D4A441',
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.25,
+    shadowRadius: 12,
+    elevation: 6,
   },
   submitLoading: {
     flexDirection: 'row',
     alignItems: 'center',
   },
   submitButtonText: {
-    fontSize: 16,
+    fontSize: 17,
     fontWeight: '600',
     color: 'white',
   },
-  submitButtonTextDisabled: {
-    color: '#C0C0C0',
+  buttonText: {
+    fontSize: 17,
+    fontWeight: '600',
+    color: '#AAAAAA',
+  },
+  buttonTextActive: {
+    color: 'white',
   },
 });
 

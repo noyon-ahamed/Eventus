@@ -1,12 +1,16 @@
 import React, { useState, useEffect, useRef } from 'react';
+import ForgotPasswordCodeImg from '../../assets/images/all_icons/forgot_password_code.png';
 import {
   View,
   Text,
   TextInput,
   TouchableOpacity,
-  ScrollView,
   StyleSheet,
+  Image,
+  Dimensions,
 } from 'react-native';
+
+const { width } = Dimensions.get('window');
 
 const ForgotPasswordCodePage = ({ navigation }) => {
   const [code, setCode] = useState(['', '', '', '']);
@@ -53,50 +57,32 @@ const ForgotPasswordCodePage = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
-        <View style={styles.content}>
-          {/* Back Button */}
-          <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-            <Text style={styles.backIcon}>←</Text>
-          </TouchableOpacity>
+      {/* Back Button */}
+      <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+        <Text style={styles.backIcon}>←</Text>
+      </TouchableOpacity>
 
-          <View style={styles.spacer60} />
+      {/* Centered Card Container */}
+      <View style={styles.centerWrapper}>
+        <View style={styles.cardWrapper}>
+          {/* Top Illustration */}
+          <View style={styles.topIllustration}>
+            <Image 
+              source={ForgotPasswordCodeImg} 
+              style={styles.illustrationImage}
+              resizeMode="contain"
+            />
+          </View>
 
-          {/* Card Container */}
-          <View style={styles.card}>
-            {/* Illustration */}
-            <View style={styles.illustrationContainer}>
-              <View style={styles.circle}>
-                <View style={styles.documentContainer}>
-                  <View style={styles.document}>
-                    <View style={styles.documentLine1} />
-                    <View style={styles.documentLine2} />
-                    <View style={styles.documentLine3} />
-                  </View>
-                  <View style={styles.checkCircle}>
-                    <Text style={styles.checkMark}>✓</Text>
-                  </View>
-                </View>
-                {/* Decorative Elements */}
-                <View style={[styles.decorDot, { top: 30, left: 40, backgroundColor: '#8BC4C4' }]} />
-                <View style={[styles.decorDot, { top: 50, right: 35, backgroundColor: '#FFC670' }]} />
-                <View style={[styles.decorDot, { bottom: 40, left: 30, backgroundColor: '#FFC670' }]} />
-              </View>
-            </View>
-
-            <View style={styles.spacer32} />
-
+          {/* White Card */}
+          <View style={styles.whiteCard}>
             {/* Title */}
             <Text style={styles.title}>Enter Code</Text>
-
-            <View style={styles.spacer8} />
 
             {/* Subtitle */}
             <Text style={styles.subtitle}>
               Enter the 6-digit verification sent to{'\n'}dummy@gmail.com
             </Text>
-
-            <View style={styles.spacer32} />
 
             {/* Code Input Boxes */}
             <View style={styles.codeContainer}>
@@ -115,8 +101,6 @@ const ForgotPasswordCodePage = ({ navigation }) => {
               ))}
             </View>
 
-            <View style={styles.spacer24} />
-
             {/* Resend Code */}
             <View style={styles.resendContainer}>
               <Text style={styles.resendText}>Resend code in </Text>
@@ -127,24 +111,20 @@ const ForgotPasswordCodePage = ({ navigation }) => {
               </TouchableOpacity>
             </View>
 
-            <View style={styles.spacer32} />
-
             {/* Continue Button */}
             <TouchableOpacity
-              style={[styles.continueButton, !isFormValid && styles.continueButtonDisabled]}
+              style={[styles.continueButton, isFormValid && styles.continueButtonActive]}
               onPress={handleContinue}
               disabled={!isFormValid}
-              activeOpacity={0.8}
+              activeOpacity={0.9}
             >
-              <Text style={[styles.continueButtonText, !isFormValid && styles.continueButtonTextDisabled]}>
+              <Text style={[styles.buttonText, isFormValid && styles.buttonTextActive]}>
                 Continue
               </Text>
             </TouchableOpacity>
-
-            <View style={styles.spacer40} />
           </View>
         </View>
-      </ScrollView>
+      </View>
     </View>
   );
 };
@@ -154,21 +134,17 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#F5F5F5',
   },
-  scrollView: {
-    flex: 1,
-  },
-  content: {
-    paddingHorizontal: 24,
-    paddingTop: 48,
-    paddingBottom: 40,
-  },
   backButton: {
+    position: 'absolute',
+    top: 60,
+    left: 24,
     width: 44,
     height: 44,
     backgroundColor: 'white',
     borderRadius: 22,
     justifyContent: 'center',
     alignItems: 'center',
+    zIndex: 100,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.08,
@@ -178,146 +154,83 @@ const styles = StyleSheet.create({
   backIcon: {
     fontSize: 20,
     color: '#000',
-    fontWeight: '400',
   },
-  spacer60: {
-    height: 60,
+  centerWrapper: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingTop: 40,
   },
-  spacer40: {
-    height: 40,
+  cardWrapper: {
+    position: 'relative',
+    alignItems: 'center',
   },
-  spacer32: {
-    height: 32,
+  topIllustration: {
+    position: 'absolute',
+    top: -100,
+    zIndex: 10,
   },
-  spacer24: {
-    height: 24,
+  illustrationImage: {
+    width: 140,
+    height: 220,
   },
-  spacer8: {
-    height: 8,
-  },
-  card: {
+  whiteCard: {
+    width: width - 48,
     backgroundColor: 'white',
-    borderRadius: 24,
-    padding: 24,
+    borderRadius: 32,
+    paddingTop: 130,
+    paddingHorizontal: 28,
+    paddingBottom: 140,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.08,
-    shadowRadius: 12,
-    elevation: 4,
-  },
-  illustrationContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 20,
-  },
-  circle: {
-    width: 160,
-    height: 160,
-    borderRadius: 80,
-    backgroundColor: '#F8F8F8',
-    justifyContent: 'center',
-    alignItems: 'center',
-    position: 'relative',
-  },
-  documentContainer: {
-    position: 'relative',
-    width: 70,
-    height: 80,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  document: {
-    width: 50,
-    height: 65,
-    backgroundColor: '#D4A441',
-    borderRadius: 8,
-    padding: 10,
-    justifyContent: 'center',
-  },
-  documentLine1: {
-    width: 30,
-    height: 3,
-    backgroundColor: 'white',
-    borderRadius: 2,
-    marginBottom: 6,
-  },
-  documentLine2: {
-    width: 30,
-    height: 3,
-    backgroundColor: 'white',
-    borderRadius: 2,
-    marginBottom: 6,
-  },
-  documentLine3: {
-    width: 20,
-    height: 3,
-    backgroundColor: 'white',
-    borderRadius: 2,
-  },
-  checkCircle: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
-    backgroundColor: '#8BC4C4',
-    justifyContent: 'center',
-    alignItems: 'center',
-    position: 'absolute',
-    bottom: -5,
-    right: -5,
-  },
-  checkMark: {
-    color: 'white',
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-  decorDot: {
-    width: 6,
-    height: 6,
-    borderRadius: 3,
-    position: 'absolute',
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.06,
+    shadowRadius: 16,
+    elevation: 5,
   },
   title: {
     fontSize: 24,
     fontWeight: '700',
-    color: '#000000',
+    color: '#000',
     textAlign: 'center',
-    letterSpacing: -0.3,
+    marginBottom: 12,
   },
   subtitle: {
-    fontSize: 13,
-    color: '#B0B0B0',
-    fontWeight: '400',
+    fontSize: 14,
+    color: '#999999',
     textAlign: 'center',
-    lineHeight: 20,
+    lineHeight: 21,
+    marginBottom: 40,
   },
   codeContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingHorizontal: 10,
+    marginBottom: 24,
   },
   codeBox: {
-    width: 60,
-    height: 60,
-    backgroundColor: '#F8F8F8',
-    borderRadius: 12,
-    borderWidth: 1,
+    width: 68,
+    height: 68,
+    backgroundColor: 'white',
+    borderRadius: 16,
+    borderWidth: 1.5,
     borderColor: '#E8E8E8',
-    fontSize: 24,
-    fontWeight: '600',
-    color: '#000000',
+    fontSize: 28,
+    fontWeight: '700',
+    color: '#000',
+    textAlign: 'center',
   },
   resendContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
+    marginBottom: 32,
   },
   resendText: {
-    fontSize: 13,
-    color: '#B0B0B0',
+    fontSize: 14,
+    color: '#999999',
   },
   resendTimer: {
-    fontSize: 13,
-    color: '#8BC4C4',
+    fontSize: 14,
+    color: '#7DD3C0',
     fontWeight: '600',
   },
   resendActive: {
@@ -325,22 +238,27 @@ const styles = StyleSheet.create({
   },
   continueButton: {
     width: '100%',
-    height: 56,
-    backgroundColor: '#D4A441',
-    borderRadius: 28,
+    height: 58,
+    borderRadius: 29,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: '#E0E0E0',
   },
-  continueButtonDisabled: {
-    backgroundColor: '#E8E8E8',
+  continueButtonActive: {
+    backgroundColor: '#D4A441',
+    shadowColor: '#D4A441',
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.25,
+    shadowRadius: 12,
+    elevation: 6,
   },
-  continueButtonText: {
-    fontSize: 16,
+  buttonText: {
+    fontSize: 17,
     fontWeight: '600',
-    color: 'white',
+    color: '#AAAAAA',
   },
-  continueButtonTextDisabled: {
-    color: '#C0C0C0',
+  buttonTextActive: {
+    color: 'white',
   },
 });
 
