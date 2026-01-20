@@ -1,0 +1,601 @@
+
+import React from 'react';
+import { View, Text, StyleSheet, ScrollView, StatusBar, TouchableOpacity } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import Icon from 'react-native-vector-icons/Ionicons';
+import { BarChart, LineChart } from 'react-native-gifted-charts';
+import { useNavigation } from '@react-navigation/native'; // Added import
+import { StatsCard } from '../components/StatsCard';
+import { ROUTES } from '../../../navigation/routes';
+
+export const DispatchDashboard = () => {
+  const navigation = useNavigation<any>();
+
+  // Data for "Weekly Loads" (Bar Chart)
+  const barData = [
+    { value: 18, frontColor: '#4E5BF2' },
+    { value: 14, frontColor: '#C7CBE8' }, 
+    { value: 36, frontColor: '#4E5BF2' },
+    { value: 30, frontColor: '#C7CBE8' },
+    { value: 22, frontColor: '#4E5BF2' },
+    { value: 18, frontColor: '#C7CBE8' },
+    { value: 30, frontColor: '#4E5BF2' },
+    { value: 24, frontColor: '#C7CBE8' },
+    { value: 26, frontColor: '#4E5BF2' },
+    { value: 24, frontColor: '#C7CBE8' },
+  ];
+
+  // Data for "Revenue vs Orders" (Line Chart)
+  const revenueData = [
+    { value: 20 }, { value: 26 }, { value: 32 }, { value: 28 }, 
+    { value: 30 }, { value: 35 }, { value: 25 },
+  ];
+  const ordersData = [
+    { value: 10 }, { value: 12 }, { value: 10 }, { value: 16 }, 
+    { value: 14 }, { value: 12 }, { value: 14 },
+  ];
+
+  return (
+    <SafeAreaView style={styles.container} edges={['top']}>
+      <StatusBar barStyle="light-content" backgroundColor="#0D1F2D" />
+      
+      {/* 1. HEADER SECTION */}
+      <View style={styles.header}>
+        <View style={styles.headerTop}>
+          <TouchableOpacity style={styles.menuBtn}>
+            <Icon name="menu" size={24} color="#FFF" />
+          </TouchableOpacity>
+          <View style={styles.pillContainer}>
+            <Icon name="chatbubble-ellipses-outline" size={20} color="#FFF" style={styles.pillIcon} />
+            <Icon name="notifications-outline" size={20} color="#FFF" />
+            <View style={styles.badge} />
+          </View>
+        </View>
+        <Text style={styles.title}>Admin Dashboard</Text>
+        <Text style={styles.subtitle}>Manage and track all active loads</Text>
+      </View>
+
+      <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
+        
+       {/* --- GRID STARTS HERE --- */}
+        <View style={styles.grid}>
+          
+          {/* Card 1: Total Loads (Clickable) */}
+          <TouchableOpacity 
+            style={styles.cardWrapper} 
+            onPress={() => navigation.navigate(ROUTES.LOAD_BOARD)}
+            activeOpacity={0.8}
+          >
+            <StatsCard 
+              label="Total Loads" 
+              value="294" 
+              trendPercentage="21.9%" 
+              trendValue="+$6k" 
+              iconName="truck-delivery-outline" 
+            />
+          </TouchableOpacity>
+
+          {/* Card 2: Active Drivers */}
+          <View style={styles.cardWrapper}>
+            <StatsCard 
+              label="Active Drivers" 
+              value="48" 
+              trendPercentage="1.9%" 
+              isPositive={false} 
+              iconName="account-group-outline" 
+            />
+          </View>
+
+          {/* Card 3: Pending Payments */}
+          <View style={styles.cardWrapper}>
+            <StatsCard 
+              label="Pending Payments" 
+              value="$24.5k" 
+              trendPercentage="21.9%" 
+              iconName="cash-clock" 
+            />
+          </View>
+
+          {/* Card 4: Fleet Size */}
+          <View style={styles.cardWrapper}>
+            <StatsCard 
+              label="Fleet Size" 
+              value="52" 
+              trendPercentage="21.9%" 
+              trendValue="+$6k" 
+              iconName="truck-outline" 
+            />
+          </View>
+
+        </View>
+        {/* --- GRID ENDS HERE --- */}
+
+        {/* 3. WEEKLY LOADS CHART */}
+        <View style={styles.card}>
+          <Text style={styles.cardTitle}>Weekly Loads Overview</Text>
+          <View style={styles.legendContainer}>
+            <View style={styles.legendItem}>
+              <Text style={styles.legendValue}>60</Text>
+              <Text style={styles.legendLabel}>Current Month</Text>
+            </View>
+            <View style={styles.legendItem}>
+              <Text style={styles.legendValue}>$50</Text>
+              <Text style={styles.legendLabel}>Last Month</Text>
+            </View>
+          </View>
+
+          <BarChart
+            data={barData}
+            barWidth={12}
+            spacing={14}
+            roundedTop
+            roundedBottom
+            hideRules
+            xAxisThickness={0}
+            yAxisThickness={0}
+            yAxisTextStyle={{ color: 'gray' }}
+            noOfSections={3}
+            height={150}
+            width={280}
+          />
+        </View>
+
+        {/* 4. REVENUE VS ORDERS CHART */}
+        <View style={styles.card}>
+          <Text style={styles.cardTitle}>Revenue vs Orders</Text>
+          <View style={[styles.legendContainer, { marginBottom: 20 }]}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', marginRight: 15 }}>
+              <View style={[styles.dot, { backgroundColor: '#4E5BF2' }]} />
+              <Text style={styles.legendText}>Revenue</Text>
+            </View>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <View style={[styles.dot, { backgroundColor: '#00E5FF' }]} />
+              <Text style={styles.legendText}>Orders</Text>
+            </View>
+          </View>
+
+          <LineChart
+            data={revenueData}
+            data2={ordersData}
+            height={180}
+            showVerticalLines={false}
+            spacing={44}
+            initialSpacing={0}
+            color1="#4E5BF2"
+            color2="#00E5FF"
+            textColor1="green"
+            dataPointsHeight={6}
+            dataPointsWidth={6}
+            dataPointsColor1="#4E5BF2"
+            dataPointsColor2="#00E5FF"
+            textShiftY={-2}
+            textShiftX={-5}
+            textFontSize={13}
+            thickness={3}
+            hideRules
+            yAxisThickness={0}
+            xAxisThickness={0}
+            curved
+          />
+        </View>
+        
+        {/* Bottom padding for scrolling */}
+        <View style={{ height: 20 }} />
+
+      </ScrollView>
+    </SafeAreaView>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#F3F4F6', 
+  },
+  scrollContent: {
+    padding: 20,
+  },
+  header: {
+    paddingHorizontal: 20,
+    paddingBottom: 20,
+    paddingTop: 10,
+  },
+  headerTop: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 20,
+    alignItems: 'center',
+  },
+  grid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between', // Pushes items to edges, leaving gap in middle
+    marginTop: 20,
+  },
+  menuBtn: {
+    padding: 8,
+    backgroundColor: '#1E2D3D',
+    borderRadius: 12,
+  },
+  cardWrapper: {
+    width: '48%',   // Forces 2 columns
+    marginBottom: 16, // Vertical gap between rows
+  },
+  pillContainer: {
+    flexDirection: 'row',
+    backgroundColor: '#1E2D3D',
+    borderRadius: 20,
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    alignItems: 'center',
+  },
+  pillIcon: {
+    marginRight: 12,
+  },
+  badge: {
+    position: 'absolute',
+    top: 8,
+    right: 14,
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: '#FF5252',
+    borderWidth: 1,
+    borderColor: '#1E2D3D',
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#FFFFFF',
+    marginBottom: 4,
+  },
+  subtitle: {
+    fontSize: 14,
+    color: '#94A3B8',
+  },
+  scrollContent: {
+    backgroundColor: '#F3F4F6',
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+    padding: 20,
+    paddingTop: 30,
+    minHeight: '100%',
+  },
+  grid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+    marginBottom: 10,
+  },
+  clickableCard: {
+    width: '48%',
+  },
+  card: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 16,
+    padding: 20,
+    marginBottom: 20,
+    shadowColor: '#000',
+    shadowOpacity: 0.05,
+    shadowRadius: 10,
+    elevation: 2,
+  },
+  cardTitle: {
+    fontSize: 18,
+    fontWeight: '700',
+    color: '#0D1F2D',
+    marginBottom: 10,
+  },
+  legendContainer: {
+    flexDirection: 'row',
+    marginBottom: 15,
+  },
+  legendItem: {
+    marginRight: 24,
+  },
+  legendValue: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#0D1F2D',
+  },
+  legendLabel: {
+    fontSize: 12,
+    color: '#64748B',
+  },
+  dot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    marginRight: 6,
+  },
+  legendText: {
+    color: '#64748B',
+    fontSize: 12,
+    fontWeight: '600',
+  },
+});
+
+// import React from 'react';
+// import { View, Text, StyleSheet, ScrollView, StatusBar, TouchableOpacity } from 'react-native';
+// import { SafeAreaView } from 'react-native-safe-area-context';
+// import Icon from 'react-native-vector-icons/Ionicons';
+// import { BarChart, LineChart } from 'react-native-gifted-charts';
+// import { StatsCard } from '../StatsCard';
+// import { useNavigation } from '@react-navigation/native';
+// import { ROUTES } from 'src/navigation/routes';
+
+// export const DispatchDashboard = () => {
+//   const navigation = useNavigation<any>();
+  
+//   // Data for "Weekly Loads" (Bar Chart)
+//   const barData = [
+//     { value: 18, frontColor: '#4E5BF2' },
+//     { value: 14, frontColor: '#C7CBE8' }, // Last Month
+//     { value: 36, frontColor: '#4E5BF2' },
+//     { value: 30, frontColor: '#C7CBE8' },
+//     { value: 22, frontColor: '#4E5BF2' },
+//     { value: 18, frontColor: '#C7CBE8' },
+//     { value: 30, frontColor: '#4E5BF2' },
+//     { value: 24, frontColor: '#C7CBE8' },
+//     { value: 26, frontColor: '#4E5BF2' },
+//     { value: 24, frontColor: '#C7CBE8' },
+//   ];
+
+//   // Data for "Revenue vs Orders" (Line Chart)
+//   const revenueData = [
+//     { value: 20 }, { value: 26 }, { value: 32 }, { value: 28 }, 
+//     { value: 30 }, { value: 35 }, { value: 25 },
+//   ];
+//   const ordersData = [
+//     { value: 10 }, { value: 12 }, { value: 10 }, { value: 16 }, 
+//     { value: 14 }, { value: 12 }, { value: 14 },
+//   ];
+
+//   return (
+//     <SafeAreaView style={styles.container} edges={['top']}>
+//       <StatusBar barStyle="light-content" backgroundColor="#0D1F2D" />
+
+//       <View style={styles.grid}>
+        
+//         {/* WRAP THIS CARD */}
+//         <TouchableOpacity 
+//            style={{ width: '48%' }} 
+//            onPress={() => navigation.navigate(ROUTES.LOAD_BOARD)}
+//         >
+//           <StatsCard 
+//             label="Total Loads" 
+//             value="294" 
+//             trendPercentage="21.9%" 
+//             trendValue="+$6k t" 
+//             iconName="truck-delivery-outline" 
+//             // Remove width from StatsCard styles if wrapping it here, 
+//             // or pass a style prop to override width: '100%'
+//           />
+//         </TouchableOpacity>
+      
+//       {/* 1. HEADER SECTION */}
+//       <View style={styles.header}>
+//         <View style={styles.headerTop}>
+//           <TouchableOpacity style={styles.menuBtn}>
+//             <Icon name="menu" size={24} color="#FFF" />
+//           </TouchableOpacity>
+//           <View style={styles.pillContainer}>
+//             <Icon name="chatbubble-ellipses-outline" size={20} color="#FFF" style={styles.pillIcon} />
+//             <Icon name="notifications-outline" size={20} color="#FFF" />
+//             <View style={styles.badge} />
+//           </View>
+//         </View>
+//         <Text style={styles.title}>Admin Dashboard</Text>
+//         <Text style={styles.subtitle}>Manage and track all active loads</Text>
+//       </View>
+
+//       <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
+        
+//         {/* 2. STATS GRID */}
+//         <View style={styles.grid}>
+//           <StatsCard 
+//             label="Total Loads" value="294" trendPercentage="21.9%" trendValue="+$6k t" 
+//             iconName="truck-delivery-outline" 
+//           />
+//           <StatsCard 
+//             label="Active Drivers" value="48" trendPercentage="1.9%" isPositive={false} 
+//             iconName="account-group-outline" 
+//           />
+//           <StatsCard 
+//             label="Pending Payments" value="$24.5k" trendPercentage="21.9%" 
+//             iconName="cash-clock" 
+//           />
+//           <StatsCard 
+//             label="Fleet Size" value="52" trendPercentage="21.9%" trendValue="+$6k t" 
+//             iconName="truck-outline" 
+//           />
+//         </View>
+
+//         {/* 3. WEEKLY LOADS CHART */}
+//         <View style={styles.card}>
+//           <Text style={styles.cardTitle}>Weekly Loads Overview</Text>
+//           <View style={styles.legendContainer}>
+//             <View style={styles.legendItem}>
+//               <Text style={styles.legendValue}>60</Text>
+//               <Text style={styles.legendLabel}>Current Month</Text>
+//             </View>
+//             <View style={styles.legendItem}>
+//               <Text style={styles.legendValue}>$50</Text>
+//               <Text style={styles.legendLabel}>Last Month</Text>
+//             </View>
+//           </View>
+
+//           <BarChart
+//             data={barData}
+//             barWidth={12}
+//             spacing={14}
+//             roundedTop
+//             roundedBottom
+//             hideRules
+//             xAxisThickness={0}
+//             yAxisThickness={0}
+//             yAxisTextStyle={{ color: 'gray' }}
+//             noOfSections={3}
+//             height={150}
+//             width={280}
+//           />
+//         </View>
+
+//         {/* 4. REVENUE VS ORDERS CHART */}
+//         <View style={styles.card}>
+//           <Text style={styles.cardTitle}>Revenue vs Orders</Text>
+//           <View style={[styles.legendContainer, { marginBottom: 20 }]}>
+//             <View style={{ flexDirection: 'row', alignItems: 'center', marginRight: 15 }}>
+//               <View style={[styles.dot, { backgroundColor: '#4E5BF2' }]} />
+//               <Text style={styles.legendText}>Revenue</Text>
+//             </View>
+//             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+//               <View style={[styles.dot, { backgroundColor: '#00E5FF' }]} />
+//               <Text style={styles.legendText}>Orders</Text>
+//             </View>
+//           </View>
+
+//           <LineChart
+//             data={revenueData}
+//             data2={ordersData}
+//             height={180}
+//             showVerticalLines={false}
+//             spacing={44}
+//             initialSpacing={0}
+//             color1="#4E5BF2"
+//             color2="#00E5FF"
+//             textColor1="green"
+//             dataPointsHeight={6}
+//             dataPointsWidth={6}
+//             dataPointsColor1="#4E5BF2"
+//             dataPointsColor2="#00E5FF"
+//             textShiftY={-2}
+//             textShiftX={-5}
+//             textFontSize={13}
+//             thickness={3}
+//             hideRules
+//             yAxisThickness={0}
+//             xAxisThickness={0}
+//             curved
+//           />
+//         </View>
+        
+//         {/* Bottom padding for scrolling */}
+//         <View style={{ height: 20 }} />
+
+//       </ScrollView>
+//     </SafeAreaView>
+//   );
+// };
+
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     backgroundColor: '#0D1F2D', // Dark Navy Background
+//   },
+//   header: {
+//     paddingHorizontal: 20,
+//     paddingBottom: 20,
+//     paddingTop: 10,
+//   },
+//   headerTop: {
+//     flexDirection: 'row',
+//     justifyContent: 'space-between',
+//     marginBottom: 20,
+//     alignItems: 'center',
+//   },
+//   menuBtn: {
+//     padding: 8,
+//     backgroundColor: '#1E2D3D',
+//     borderRadius: 12,
+//   },
+//   pillContainer: {
+//     flexDirection: 'row',
+//     backgroundColor: '#1E2D3D',
+//     borderRadius: 20,
+//     paddingVertical: 8,
+//     paddingHorizontal: 16,
+//     alignItems: 'center',
+//   },
+//   pillIcon: {
+//     marginRight: 12,
+//   },
+//   badge: {
+//     position: 'absolute',
+//     top: 8,
+//     right: 14,
+//     width: 8,
+//     height: 8,
+//     borderRadius: 4,
+//     backgroundColor: '#FF5252',
+//     borderWidth: 1,
+//     borderColor: '#1E2D3D',
+//   },
+//   title: {
+//     fontSize: 24,
+//     fontWeight: 'bold',
+//     color: '#FFFFFF',
+//     marginBottom: 4,
+//   },
+//   subtitle: {
+//     fontSize: 14,
+//     color: '#94A3B8',
+//   },
+//   scrollContent: {
+//     backgroundColor: '#F3F4F6', // Light gray background for body
+//     borderTopLeftRadius: 30,
+//     borderTopRightRadius: 30,
+//     padding: 20,
+//     paddingTop: 30,
+//     minHeight: '100%',
+//   },
+//   grid: {
+//     flexDirection: 'row',
+//     flexWrap: 'wrap',
+//     justifyContent: 'space-between',
+//     marginBottom: 10,
+//   },
+//   card: {
+//     backgroundColor: '#FFFFFF',
+//     borderRadius: 16,
+//     padding: 20,
+//     marginBottom: 20,
+//     shadowColor: '#000',
+//     shadowOpacity: 0.05,
+//     shadowRadius: 10,
+//     elevation: 2,
+//   },
+//   cardTitle: {
+//     fontSize: 18,
+//     fontWeight: '700',
+//     color: '#0D1F2D',
+//     marginBottom: 10,
+//   },
+//   legendContainer: {
+//     flexDirection: 'row',
+//     marginBottom: 15,
+//   },
+//   legendItem: {
+//     marginRight: 24,
+//   },
+//   legendValue: {
+//     fontSize: 18,
+//     fontWeight: 'bold',
+//     color: '#0D1F2D',
+//   },
+//   legendLabel: {
+//     fontSize: 12,
+//     color: '#64748B',
+//   },
+//   dot: {
+//     width: 8,
+//     height: 8,
+//     borderRadius: 4,
+//     marginRight: 6,
+//   },
+//   legendText: {
+//     color: '#64748B',
+//     fontSize: 12,
+//     fontWeight: '600',
+//   },
+// });

@@ -16,30 +16,30 @@ export const StatsCard = ({
   value, 
   trendPercentage, 
   trendValue, 
-  isPositive = true, 
-  iconName 
+  iconName, 
+  isPositive = true 
 }: StatsCardProps) => {
   return (
-    <View style={styles.container}>
-      {/* Header with Icon */}
-      <View style={styles.header}>
+    <View style={styles.card}>
+      {/* Header: Icon + Label */}
+      <View style={styles.headerRow}>
         <View style={styles.iconContainer}>
-          <Icon name={iconName} size={20} color="#0D1F2D" />
+          <Icon name={iconName} size={22} color="#0D1F2D" />
         </View>
-        <Text style={styles.label}>{label}</Text>
+        <Text style={styles.label} numberOfLines={2}>{label}</Text>
       </View>
 
       {/* Main Value */}
       <Text style={styles.value}>{value}</Text>
 
-      {/* Trend Footer */}
-      <View style={styles.footer}>
+      {/* Footer: Trend */}
+      <View style={styles.trendRow}>
         <Icon 
           name={isPositive ? "arrow-top-right" : "arrow-bottom-right"} 
           size={16} 
-          color={isPositive ? "#00C853" : "#FF5252"} 
+          color={isPositive ? "#10B981" : "#EF4444"} 
         />
-        <Text style={[styles.trendText, { color: isPositive ? "#00C853" : "#FF5252" }]}>
+        <Text style={[styles.trendText, { color: isPositive ? "#10B981" : "#EF4444" }]}>
           {trendPercentage}
         </Text>
         {trendValue && (
@@ -51,57 +51,59 @@ export const StatsCard = ({
 };
 
 const styles = StyleSheet.create({
-  container: {
-    width: '48%', // Forces 2 columns
+  card: {
     backgroundColor: '#FFFFFF',
     borderRadius: 16,
     padding: 16,
-    marginBottom: 16,
-    // Shadow for iOS/Android
+    // Ensure the card fills the wrapper provided by the parent
+    flex: 1, 
+    minHeight: 140,
+    justifyContent: 'space-between',
+    // Shadow for depth
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.05,
-    shadowRadius: 8,
-    elevation: 3,
+    shadowRadius: 10,
+    elevation: 2,
   },
-  header: {
+  headerRow: {
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'flex-start',
     marginBottom: 12,
   },
   iconContainer: {
-    width: 32,
-    height: 32,
-    borderRadius: 8,
-    backgroundColor: '#F3F4F6',
+    width: 40,
+    height: 40,
+    borderRadius: 12,
+    backgroundColor: '#E2E8F0', // Light gray circle bg
     justifyContent: 'center',
     alignItems: 'center',
-    marginRight: 8,
+    marginRight: 12,
   },
   label: {
-    fontSize: 12,
-    color: '#64748B',
+    fontSize: 14,
+    color: '#334155', // Slate gray
+    fontWeight: '600',
     flex: 1,
-    flexWrap: 'wrap',
+    marginTop: 4, // Align slightly with icon
   },
   value: {
-    fontSize: 24,
-    fontWeight: '700',
-    color: '#0D1F2D',
+    fontSize: 28,
+    fontWeight: '800',
+    color: '#0D1F2D', // Dark navy
     marginBottom: 8,
   },
-  footer: {
+  trendRow: {
     flexDirection: 'row',
     alignItems: 'center',
   },
   trendText: {
-    fontSize: 12,
+    fontSize: 14,
     fontWeight: '600',
-    marginLeft: 2,
+    marginLeft: 4,
   },
   trendValue: {
-    fontSize: 12,
+    fontSize: 14,
     color: '#64748B',
-    marginLeft: 4,
+    marginLeft: 8,
   },
 });

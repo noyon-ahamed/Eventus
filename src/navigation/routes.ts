@@ -6,6 +6,7 @@ export const ROUTES = {
   // App Stack
   DISPATCH_DASHBOARD: 'DispatchDashboard',
   LOAD_BOARD: 'LoadBoard',
+  ASSIGN_LOAD: 'AssignLoad',
   
   // Stacks (Groups of screens)
   AUTH_STACK: 'AuthStack',
