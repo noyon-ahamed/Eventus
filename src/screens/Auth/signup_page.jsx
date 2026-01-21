@@ -1,4 +1,9 @@
 import React, { useState } from 'react';
+import EmailIcon from '../../assets/images/all_icons/email.png';
+import EyeIcon from '../../assets/images/all_icons/eye.png';
+import KeyIcon from '../../assets/images/all_icons/key.png';
+import UserIcon from '../../assets/images/all_icons/user.png';
+
 import {
   View,
   Text,
@@ -39,7 +44,7 @@ const SignupPage = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <ScrollView style={styles.scrollView}>
+      <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
         <View style={styles.content}>
           {/* Back Button */}
           <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
@@ -63,7 +68,7 @@ const SignupPage = ({ navigation }) => {
           {/* Name Field */}
           <Text style={styles.label}>Full Name</Text>
           <View style={styles.inputContainer}>
-            <Text style={styles.inputIcon}>👤</Text>
+            <Image source={UserIcon} style={styles.inputIcon} />
             <TextInput
               style={styles.input}
               placeholder="Input Full Name"
@@ -79,7 +84,7 @@ const SignupPage = ({ navigation }) => {
           {/* Email Field */}
           <Text style={styles.label}>Email</Text>
           <View style={styles.inputContainer}>
-            <Text style={styles.inputIcon}>✉️</Text>
+            <Image source={EmailIcon} style={styles.inputIcon} />
             <TextInput
               style={styles.input}
               placeholder="Input Email"
@@ -96,7 +101,7 @@ const SignupPage = ({ navigation }) => {
           {/* Password Field */}
           <Text style={styles.label}>Password</Text>
           <View style={styles.inputContainer}>
-            <Text style={styles.inputIcon}>🔑</Text>
+            <Image source={KeyIcon} style={styles.inputIcon} />
             <TextInput
               style={styles.input}
               placeholder="Input Password"
@@ -109,9 +114,7 @@ const SignupPage = ({ navigation }) => {
               style={styles.eyeIcon}
               onPress={() => setIsPasswordVisible(!isPasswordVisible)}
             >
-              <Text style={styles.eyeIconText}>
-                {isPasswordVisible ? '👁️' : '👁️‍🗨️'}
-              </Text>
+              <Image source={EyeIcon} style={styles.eyeIconImg} />
             </TouchableOpacity>
           </View>
 
@@ -120,7 +123,7 @@ const SignupPage = ({ navigation }) => {
           {/* Confirm Password Field */}
           <Text style={styles.label}>Confirm Password</Text>
           <View style={styles.inputContainer}>
-            <Text style={styles.inputIcon}>🔑</Text>
+            <Image source={KeyIcon} style={styles.inputIcon} />
             <TextInput
               style={styles.input}
               placeholder="Confirm Password"
@@ -133,9 +136,7 @@ const SignupPage = ({ navigation }) => {
               style={styles.eyeIcon}
               onPress={() => setIsConfirmPasswordVisible(!isConfirmPasswordVisible)}
             >
-              <Text style={styles.eyeIconText}>
-                {isConfirmPasswordVisible ? '👁️' : '👁️‍🗨️'}
-              </Text>
+              <Image source={EyeIcon} style={styles.eyeIconImg} />
             </TouchableOpacity>
           </View>
 
@@ -147,7 +148,7 @@ const SignupPage = ({ navigation }) => {
             onPress={() => setAgreeToTerms(!agreeToTerms)}
           >
             <View style={[styles.checkbox, agreeToTerms && styles.checkboxActive]}>
-              {agreeToTerms && <Text style={styles.checkmark}>✓</Text>}
+              {agreeToTerms && <View style={styles.checkmarkIcon} />}
             </View>
             <Text style={styles.termsText}>
               I agree to the{' '}
@@ -191,7 +192,10 @@ const SignupPage = ({ navigation }) => {
             <View style={styles.socialSpacer} />
 
             <TouchableOpacity style={styles.socialButton}>
-              <Text style={styles.appleIcon}></Text>
+              <Image
+                source={{ uri: 'https://cdn-icons-png.flaticon.com/512/731/731985.png' }}
+                style={styles.appleIcon}
+              />
             </TouchableOpacity>
           </View>
 
@@ -285,8 +289,10 @@ const styles = StyleSheet.create({
     borderColor: '#E8E8E8',
   },
   inputIcon: {
-    fontSize: 20,
+    width: 18,
+    height: 18,
     marginRight: 12,
+    resizeMode: 'contain',
   },
   input: {
     flex: 1,
@@ -297,8 +303,10 @@ const styles = StyleSheet.create({
   eyeIcon: {
     padding: 8,
   },
-  eyeIconText: {
-    fontSize: 20,
+  eyeIconImg: {
+    width: 18,
+    height: 18,
+    resizeMode: 'contain',
   },
   checkboxRow: {
     flexDirection: 'row',
@@ -318,10 +326,14 @@ const styles = StyleSheet.create({
     backgroundColor: '#D4A441',
     borderColor: '#D4A441',
   },
-  checkmark: {
-    color: 'white',
-    fontSize: 12,
-    fontWeight: 'bold',
+  checkmarkIcon: {
+    width: 10,
+    height: 6,
+    borderLeftWidth: 2,
+    borderBottomWidth: 2,
+    borderColor: 'white',
+    transform: [{ rotate: '-45deg' }],
+    marginTop: -2,
   },
   termsText: {
     fontSize: 13,
@@ -383,10 +395,12 @@ const styles = StyleSheet.create({
   socialIcon: {
     width: 28,
     height: 28,
+    resizeMode: 'contain',
   },
   appleIcon: {
-    fontSize: 32,
-    color: '#000',
+    width: 30,
+    height: 30,
+    resizeMode: 'contain',
   },
   socialSpacer: {
     width: 20,

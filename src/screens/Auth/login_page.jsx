@@ -1,4 +1,8 @@
 import React, { useState } from 'react';
+import EmailIcon from '../../assets/images/all_icons/email.png';
+import EyeIcon from '../../assets/images/all_icons/eye.png';
+import KeyIcon from '../../assets/images/all_icons/key.png';
+
 import {
   View,
   Text,
@@ -23,7 +27,6 @@ const LoginPage = ({ navigation }) => {
       login(); // Trigger authentication
     }
   };
-
 
   const goToForgotPassword = () => {
     navigation.navigate('ForgotPassword');
@@ -61,7 +64,7 @@ const LoginPage = ({ navigation }) => {
           {/* Email Field */}
           <Text style={styles.label}>Email</Text>
           <View style={styles.inputContainer}>
-            <Text style={styles.inputIconText}>✉️</Text>
+            <Image source={EmailIcon} style={styles.inputIcon} />
             <TextInput
               style={styles.input}
               placeholder="Input Email"
@@ -78,7 +81,7 @@ const LoginPage = ({ navigation }) => {
           {/* Password Field */}
           <Text style={styles.label}>Password</Text>
           <View style={styles.inputContainer}>
-            <Text style={styles.inputIconText}>🔑</Text>
+            <Image source={KeyIcon} style={styles.inputIcon} />
             <TextInput
               style={styles.input}
               placeholder="Input Password"
@@ -87,13 +90,11 @@ const LoginPage = ({ navigation }) => {
               onChangeText={setPassword}
               secureTextEntry={!isPasswordVisible}
             />
-            <TouchableOpacity
-              style={styles.eyeIcon}
+            <TouchableOpacity 
+              style={styles.eyeIcon} 
               onPress={() => setIsPasswordVisible(!isPasswordVisible)}
             >
-              <Text style={styles.eyeIconText}>
-                {isPasswordVisible ? '👁️' : '👁️‍🗨️'}
-              </Text>
+              <Image source={EyeIcon} style={styles.eyeIconImg} />
             </TouchableOpacity>
           </View>
 
@@ -144,7 +145,10 @@ const LoginPage = ({ navigation }) => {
             <View style={styles.socialSpacer} />
 
             <TouchableOpacity style={styles.socialButton}>
-              <Text style={styles.appleIconText}></Text>
+              <Image
+                source={{ uri: 'https://cdn-icons-png.flaticon.com/512/731/731985.png' }}
+                style={styles.appleIcon}
+              />
             </TouchableOpacity>
           </View>
 
@@ -152,7 +156,7 @@ const LoginPage = ({ navigation }) => {
 
           {/* Sign Up Link */}
           <View style={styles.signupRow}>
-            <Text style={styles.signupText}>Dont have an account? </Text>
+            <Text style={styles.signupText}>Don't have an account? </Text>
             <TouchableOpacity onPress={goToSignUp}>
               <Text style={styles.signupLink}>Sign Up</Text>
             </TouchableOpacity>
@@ -240,9 +244,11 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#E8E8E8',
   },
-  inputIconText: {
-    fontSize: 20,
+  inputIcon: {
+    width: 18,
+    height: 18,
     marginRight: 12,
+    resizeMode: 'contain',
   },
   input: {
     flex: 1,
@@ -253,8 +259,10 @@ const styles = StyleSheet.create({
   eyeIcon: {
     padding: 8,
   },
-  eyeIconText: {
-    fontSize: 20,
+  eyeIconImg: {
+    width: 18,
+    height: 18,
+    resizeMode: 'contain',
   },
   row: {
     flexDirection: 'row',
@@ -335,10 +343,12 @@ const styles = StyleSheet.create({
   socialIcon: {
     width: 28,
     height: 28,
+    resizeMode: 'contain',
   },
-  appleIconText: {
-    fontSize: 32,
-    color: '#000',
+  appleIcon: {
+    width: 30,
+    height: 30,
+    resizeMode: 'contain',
   },
   socialSpacer: {
     width: 24,
