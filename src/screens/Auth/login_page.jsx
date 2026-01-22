@@ -40,10 +40,16 @@ const LoginPage = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
+      <ScrollView
+        style={styles.scrollView}
+        showsVerticalScrollIndicator={false}
+      >
         <View style={styles.content}>
           {/* Back Button */}
-          <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+          <TouchableOpacity
+            style={styles.backButton}
+            onPress={() => navigation.goBack()}
+          >
             <Text style={styles.backIcon}>←</Text>
           </TouchableOpacity>
 
@@ -90,8 +96,8 @@ const LoginPage = ({ navigation }) => {
               onChangeText={setPassword}
               secureTextEntry={!isPasswordVisible}
             />
-            <TouchableOpacity 
-              style={styles.eyeIcon} 
+            <TouchableOpacity
+              style={styles.eyeIcon}
               onPress={() => setIsPasswordVisible(!isPasswordVisible)}
             >
               <Image source={EyeIcon} style={styles.eyeIconImg} />
@@ -106,7 +112,9 @@ const LoginPage = ({ navigation }) => {
               style={styles.checkboxRow}
               onPress={() => setRememberMe(!rememberMe)}
             >
-              <View style={[styles.checkbox, rememberMe && styles.checkboxActive]}>
+              <View
+                style={[styles.checkbox, rememberMe && styles.checkboxActive]}
+              >
                 {rememberMe && <View style={styles.checkmarkIcon} />}
               </View>
               <Text style={styles.rememberText}>Remember me</Text>
@@ -121,12 +129,20 @@ const LoginPage = ({ navigation }) => {
 
           {/* Login Button */}
           <TouchableOpacity
-            style={[styles.loginButton, !isFormValid && styles.loginButtonDisabled]}
+            style={[
+              styles.loginButton,
+              !isFormValid && styles.loginButtonDisabled,
+            ]}
             onPress={handleLogin}
             disabled={!isFormValid}
             activeOpacity={0.8}
           >
-            <Text style={[styles.loginButtonText, !isFormValid && styles.loginButtonTextDisabled]}>
+            <Text
+              style={[
+                styles.loginButtonText,
+                !isFormValid && styles.loginButtonTextDisabled,
+              ]}
+            >
               Login
             </Text>
           </TouchableOpacity>
@@ -137,7 +153,9 @@ const LoginPage = ({ navigation }) => {
           <View style={styles.socialRow}>
             <TouchableOpacity style={styles.socialButton}>
               <Image
-                source={{ uri: 'https://www.google.com/images/branding/googleg/1x/googleg_standard_color_128dp.png' }}
+                source={{
+                  uri: 'https://www.google.com/images/branding/googleg/1x/googleg_standard_color_128dp.png',
+                }}
                 style={styles.socialIcon}
               />
             </TouchableOpacity>
@@ -146,7 +164,9 @@ const LoginPage = ({ navigation }) => {
 
             <TouchableOpacity style={styles.socialButton}>
               <Image
-                source={{ uri: 'https://cdn-icons-png.flaticon.com/512/731/731985.png' }}
+                source={{
+                  uri: 'https://cdn-icons-png.flaticon.com/512/731/731985.png',
+                }}
                 style={styles.appleIcon}
               />
             </TouchableOpacity>

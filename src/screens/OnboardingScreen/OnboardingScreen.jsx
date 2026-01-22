@@ -26,7 +26,7 @@ const OnboardingScreen = ({ navigation }) => {
   ];
 
   const goToLogin = () => {
-    navigation.replace('LoginPage');
+    navigation.replace('RoleSelection');
   };
 
   const handleScroll = (event) => {
@@ -67,7 +67,7 @@ const OnboardingScreen = ({ navigation }) => {
     <View key={index} style={[styles.page, { width }]}>
       <View style={styles.pageContent}>
         <View style={styles.spacer60} />
-        
+
         {/* Illustration Section */}
         <View style={styles.illustrationContainer}>
           {/* Floating Circles */}

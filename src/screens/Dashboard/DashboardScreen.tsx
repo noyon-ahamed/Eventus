@@ -1,5 +1,6 @@
 // src/screens/Dashboard/DashboardScreen.tsx
 import React, { useState } from 'react';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import {
   View,
   Text,
@@ -7,7 +8,6 @@ import {
   ScrollView,
   TouchableOpacity,
   StatusBar,
-  SafeAreaView,
   Image,
 } from 'react-native';
 import { Colors, FontSizes, Spacing, BorderRadius } from '../../constants/colors';
@@ -41,7 +41,7 @@ const DashboardScreen = ({ navigation }: any) => {
 
   const renderHeader = () => (
     <View style={styles.header}>
-      <TouchableOpacity onPress={() => {/* Menu can be implemented later */}}>
+      <TouchableOpacity onPress={() => {/* Menu can be implemented later */ }}>
         <View style={styles.menuIcon}>
           <View style={styles.menuLine} />
           <View style={styles.menuLine} />
@@ -112,7 +112,7 @@ const DashboardScreen = ({ navigation }: any) => {
         </View>
       </View>
 
-      <TouchableOpacity 
+      <TouchableOpacity
         style={styles.actionButton}
         onPress={() => navigation.navigate('LoadDetail')}
       >
@@ -167,13 +167,13 @@ const DashboardScreen = ({ navigation }: any) => {
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="light-content" backgroundColor={Colors.primaryDark} />
-      
+
       <View style={styles.headerContainer}>
         {renderHeader()}
         {renderGreeting()}
       </View>
 
-      <ScrollView 
+      <ScrollView
         style={styles.content}
         showsVerticalScrollIndicator={false}
       >
