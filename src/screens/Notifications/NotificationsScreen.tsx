@@ -9,25 +9,24 @@ import {
   SafeAreaView,
   StatusBar,
 } from 'react-native';
+import Icon from 'react-native-vector-icons/Ionicons';
 import { Colors, FontSizes, Spacing, BorderRadius } from '../../constants/colors';
 
 const NotificationsScreen = ({ navigation }: any) => {
-  const [activeFilter, setActiveFilter] = useState('all');
+  const [_activeFilter, setActiveFilter] = useState('all');
 
   const notifications = {
     today: [
       {
         id: '1',
         type: 'Load Assignment',
-        icon: '📦',
         color: Colors.blue,
-        message: 'New Load Assigned: Dallas → Denver, Pickup 9 AM',
+        message: 'New Load Assigned: Dallas → Denver,\nPickup 9 AM',
         time: '5 Min ago',
       },
       {
         id: '2',
         type: 'Payment',
-        icon: '💰',
         color: Colors.green,
         message: 'Payment $950 sent via ACH on Oct 22',
         time: '5 Min ago',
@@ -35,8 +34,7 @@ const NotificationsScreen = ({ navigation }: any) => {
       {
         id: '3',
         type: 'Compliance',
-        icon: '⚠️',
-        color: Colors.yellow,
+        color: Colors.orange,
         message: 'Insurance Expiring in 5 Days — Upload New Document',
         time: '5 Min ago',
       },
@@ -45,31 +43,29 @@ const NotificationsScreen = ({ navigation }: any) => {
       {
         id: '4',
         type: 'Load Assignment',
-        icon: '📦',
         color: Colors.blue,
-        message: 'New Load Assigned: Dallas → Denver, Pickup 9 AM',
+        message: 'New Load Assigned: Dallas → Denver,\nPickup 9 AM',
         time: '5 Min ago',
       },
     ],
   };
 
   const filters = [
-    { id: 'all', label: 'All', icon: '🏷️' },
-    { id: 'promo', label: 'Promo', icon: '🏷️' },
-    { id: 'order', label: 'Order', icon: '📋' },
-    { id: 'delivery', label: 'Delivery', icon: '🚚' },
+    { id: 'promo', label: 'Promo', icon: 'pricetag-outline' },
+    { id: 'order', label: 'Order', icon: 'calendar-outline' },
+    { id: 'delivery', label: 'Delivery', icon: 'truck-outline' },
   ];
 
   const renderNotificationCard = (notification: any) => (
     <TouchableOpacity key={notification.id} style={styles.notificationCard}>
-      <View style={[styles.notificationIcon, { backgroundColor: notification.color + '20' }]}>
-        <Text style={styles.iconText}>{notification.icon}</Text>
+      <View style={styles.indicatorContainer}>
+        <View style={[styles.indicatorDot, { backgroundColor: notification.color }]} />
       </View>
       <View style={styles.notificationContent}>
         <View style={styles.notificationHeader}>
           <Text style={styles.notificationType}>{notification.type}</Text>
-          <Text style={styles.notificationTime}>{notification.time}</Text>
         </View>
+        <Text style={styles.notificationTime}>{notification.time}</Text>
         <Text style={styles.notificationMessage}>{notification.message}</Text>
       </View>
     </TouchableOpacity>
@@ -77,18 +73,19 @@ const NotificationsScreen = ({ navigation }: any) => {
 
   return (
     <SafeAreaView style={styles.container}>
+      {/* Design uses default status bar style usually, but lets match standard */}
       <StatusBar barStyle="dark-content" backgroundColor={Colors.white} />
 
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
-          <Text style={styles.backIcon}>←</Text>
+          <Icon name="arrow-back" size={24} color={Colors.black} />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Notifications</Text>
         <View style={styles.placeholder} />
       </View>
 
-      <ScrollView 
-        horizontal 
+      <ScrollView
+        horizontal
         showsHorizontalScrollIndicator={false}
         style={styles.filterContainer}
         contentContainerStyle={styles.filterContent}
@@ -96,21 +93,11 @@ const NotificationsScreen = ({ navigation }: any) => {
         {filters.map((filter) => (
           <TouchableOpacity
             key={filter.id}
-            style={[
-              styles.filterButton,
-              activeFilter === filter.id && styles.filterButtonActive,
-            ]}
+            style={styles.filterButton} // Design shows all buttons dark blue
             onPress={() => setActiveFilter(filter.id)}
           >
-            <Text style={styles.filterIcon}>{filter.icon}</Text>
-            <Text
-              style={[
-                styles.filterText,
-                activeFilter === filter.id && styles.filterTextActive,
-              ]}
-            >
-              {filter.label}
-            </Text>
+            <Icon name={filter.icon} size={16} color={Colors.white} />
+            <Text style={styles.filterText}>{filter.label}</Text>
           </TouchableOpacity>
         ))}
       </ScrollView>
@@ -128,6 +115,23 @@ const NotificationsScreen = ({ navigation }: any) => {
 
         <View style={{ height: 100 }} />
       </ScrollView>
+      <View style={styles.bottomNav}>
+        <TouchableOpacity style={styles.navItem} onPress={() => navigation.navigate('Dashboard')}>
+          <Text style={styles.navIcon}>🏠</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.navItem} onPress={() => navigation.navigate('Messages')}>
+          <Text style={styles.navIcon}>💬</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={[styles.navItem, styles.navItemActive]}>
+          <Text style={[styles.navIcon, styles.navIconActive]}>🔔</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.navItem} onPress={() => navigation.navigate('Earnings')}>
+          <Text style={styles.navIcon}>💳</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.navItem} onPress={() => navigation.navigate('Profile')}>
+          <Text style={styles.navIcon}>👤</Text>
+        </TouchableOpacity>
+      </View>
     </SafeAreaView>
   );
 };
@@ -135,7 +139,7 @@ const NotificationsScreen = ({ navigation }: any) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.white,
+    backgroundColor: Colors.background, // Light gray background for the screen
   },
   header: {
     flexDirection: 'row',
@@ -144,99 +148,84 @@ const styles = StyleSheet.create({
     paddingHorizontal: Spacing.md,
     paddingVertical: Spacing.md,
     backgroundColor: Colors.white,
-    borderBottomWidth: 1,
-    borderBottomColor: Colors.border,
   },
   backButton: {
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: Colors.lightGray,
+    backgroundColor: Colors.white,
+    borderWidth: 1,
+    borderColor: Colors.border,
     justifyContent: 'center',
     alignItems: 'center',
   },
-  backIcon: {
-    fontSize: 24,
-    color: Colors.primaryDark,
-  },
   headerTitle: {
     fontSize: FontSizes.lg,
-    fontWeight: '600',
-    color: Colors.primaryDark,
+    fontWeight: 'bold',
+    color: Colors.black,
   },
   placeholder: {
     width: 40,
   },
   filterContainer: {
-    backgroundColor: Colors.white,
-    borderBottomWidth: 1,
-    borderBottomColor: Colors.border,
+    backgroundColor: Colors.background,
+    maxHeight: 70, // Limit height
   },
   filterContent: {
     paddingHorizontal: Spacing.md,
     paddingVertical: Spacing.md,
     gap: Spacing.sm,
+    flexDirection: 'row',
   },
   filterButton: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: Spacing.md,
+    paddingHorizontal: Spacing.lg,
     paddingVertical: Spacing.sm,
     borderRadius: BorderRadius.xl,
-    backgroundColor: Colors.lightGray,
-    gap: Spacing.xs,
-  },
-  filterButtonActive: {
     backgroundColor: Colors.primaryDark,
-  },
-  filterIcon: {
-    fontSize: 16,
+    gap: Spacing.xs,
   },
   filterText: {
     fontSize: FontSizes.sm,
     fontWeight: '500',
-    color: Colors.primaryDark,
-  },
-  filterTextActive: {
     color: Colors.white,
   },
   content: {
     flex: 1,
-    backgroundColor: Colors.background,
   },
   section: {
-    paddingTop: Spacing.lg,
+    paddingTop: Spacing.md,
   },
   sectionTitle: {
     fontSize: FontSizes.lg,
     fontWeight: 'bold',
-    color: Colors.primaryDark,
-    paddingHorizontal: Spacing.md,
-    marginBottom: Spacing.md,
+    color: Colors.black, // "Today", "Tomorrow" are bold black
+    paddingHorizontal: Spacing.lg,
+    marginBottom: Spacing.sm,
   },
   notificationCard: {
     flexDirection: 'row',
     backgroundColor: Colors.white,
-    padding: Spacing.md,
+    padding: Spacing.lg,
     marginHorizontal: Spacing.md,
-    marginBottom: Spacing.sm,
-    borderRadius: BorderRadius.md,
+    marginBottom: Spacing.md,
+    borderRadius: BorderRadius.lg,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
+    shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.05,
-    shadowRadius: 4,
+    shadowRadius: 8,
     elevation: 2,
+    alignItems: 'flex-start',
   },
-  notificationIcon: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
-    justifyContent: 'center',
-    alignItems: 'center',
+  indicatorContainer: {
     marginRight: Spacing.md,
+    paddingTop: 4, // Align with text
   },
-  iconText: {
-    fontSize: 24,
+  indicatorDot: {
+    width: 12,
+    height: 12,
+    borderRadius: 6,
   },
   notificationContent: {
     flex: 1,
@@ -244,22 +233,45 @@ const styles = StyleSheet.create({
   notificationHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: Spacing.xs,
+    marginBottom: 4,
   },
   notificationType: {
     fontSize: FontSizes.md,
-    fontWeight: '600',
+    fontWeight: 'bold',
     color: Colors.primaryDark,
   },
   notificationTime: {
     fontSize: FontSizes.xs,
     color: Colors.gray,
+    marginBottom: 8,
   },
   notificationMessage: {
     fontSize: FontSizes.sm,
     color: Colors.darkGray,
     lineHeight: 20,
+  },
+  bottomNav: {
+    flexDirection: 'row',
+    backgroundColor: Colors.white,
+    paddingVertical: Spacing.sm,
+    paddingBottom: 20,
+    borderTopWidth: 1,
+    borderTopColor: Colors.border,
+  },
+  navItem: {
+    flex: 1,
+    alignItems: 'center',
+    paddingVertical: Spacing.xs,
+  },
+  navItemActive: {
+    opacity: 1,
+  },
+  navIcon: {
+    fontSize: 24,
+    opacity: 0.6,
+  },
+  navIconActive: {
+    opacity: 1,
   },
 });
 

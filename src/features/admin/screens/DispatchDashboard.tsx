@@ -8,6 +8,33 @@ import { useNavigation } from '@react-navigation/native'; // Added import
 import { StatsCard } from '../components/StatsCard';
 import { ROUTES } from '../../../navigation/routes';
 
+
+const PointerLabel = (_items: any) => {
+  return (
+    <View
+      style={{
+        height: 90,
+        width: 100,
+        justifyContent: 'center',
+        backgroundColor: '#1F2937',
+        borderRadius: 8,
+        padding: 10,
+      }}>
+      <Text style={{ color: 'white', fontSize: 12, fontWeight: '600', marginBottom: 4 }}>
+        Jun, 2021
+      </Text>
+      <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 2 }}>
+        <View style={{ width: 8, height: 8, borderRadius: 4, backgroundColor: '#6366F1', marginRight: 6 }} />
+        <Text style={{ color: 'white', fontSize: 11 }}>Revenue</Text>
+      </View>
+      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        <View style={{ width: 8, height: 8, borderRadius: 4, backgroundColor: '#10B981', marginRight: 6 }} />
+        <Text style={{ color: 'white', fontSize: 11 }}>Orders</Text>
+      </View>
+    </View>
+  );
+};
+
 export const DispatchDashboard = () => {
   const navigation = useNavigation<any>();
 
@@ -230,31 +257,7 @@ export const DispatchDashboard = () => {
               pointerLabelHeight: 90,
               activatePointersOnLongPress: false,
               autoAdjustPointerLabelPosition: true,
-              pointerLabelComponent: (items: any) => {
-                return (
-                  <View
-                    style={{
-                      height: 90,
-                      width: 100,
-                      justifyContent: 'center',
-                      backgroundColor: '#1F2937',
-                      borderRadius: 8,
-                      padding: 10,
-                    }}>
-                    <Text style={{ color: 'white', fontSize: 12, fontWeight: '600', marginBottom: 4 }}>
-                      Jun, 2021
-                    </Text>
-                    <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 2 }}>
-                      <View style={{ width: 8, height: 8, borderRadius: 4, backgroundColor: '#6366F1', marginRight: 6 }} />
-                      <Text style={{ color: 'white', fontSize: 11 }}>Revenue</Text>
-                    </View>
-                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                      <View style={{ width: 8, height: 8, borderRadius: 4, backgroundColor: '#10B981', marginRight: 6 }} />
-                      <Text style={{ color: 'white', fontSize: 11 }}>Orders</Text>
-                    </View>
-                  </View>
-                );
-              },
+              pointerLabelComponent: PointerLabel,
             }}
           />
         </View>

@@ -8,7 +8,6 @@ import {
   ScrollView,
   TouchableOpacity,
   StatusBar,
-  Image,
 } from 'react-native';
 import { Colors, FontSizes, Spacing, BorderRadius } from '../../constants/colors';
 
@@ -16,6 +15,7 @@ const DashboardScreen = ({ navigation }: any) => {
   const [activeTab, setActiveTab] = useState('home');
 
   const activeDeliveries = [
+    // ... data ... 
     {
       id: '1',
       status: 'In Transit',
@@ -39,9 +39,10 @@ const DashboardScreen = ({ navigation }: any) => {
     },
   ];
 
+  /* Helper functions unchanged ... */
   const renderHeader = () => (
     <View style={styles.header}>
-      <TouchableOpacity onPress={() => {/* Menu can be implemented later */ }}>
+      <TouchableOpacity onPress={() => navigation.openDrawer()}>
         <View style={styles.menuIcon}>
           <View style={styles.menuLine} />
           <View style={styles.menuLine} />
@@ -67,8 +68,9 @@ const DashboardScreen = ({ navigation }: any) => {
     </View>
   );
 
-  const renderDeliveryCard = (delivery: any, index: number) => (
+  const renderDeliveryCard = (delivery: any) => (
     <View key={delivery.id} style={styles.deliveryCard}>
+      {/* details ... */}
       <View style={styles.deliveryHeader}>
         <View style={[styles.statusBadge, { backgroundColor: delivery.statusColor }]}>
           <Text style={styles.statusText}>{delivery.status}</Text>
@@ -125,6 +127,7 @@ const DashboardScreen = ({ navigation }: any) => {
 
   const renderBottomNav = () => (
     <View style={styles.bottomNav}>
+      {/* nav items */}
       <TouchableOpacity
         style={styles.navItem}
         onPress={() => setActiveTab('home')}
@@ -165,37 +168,60 @@ const DashboardScreen = ({ navigation }: any) => {
   );
 
   return (
-    <SafeAreaView style={styles.container}>
-      <StatusBar barStyle="light-content" backgroundColor={Colors.primaryDark} />
+    <View style={styles.mainContainer}>
+      {/* Top SafeArea for status bar color */}
+      <SafeAreaView style={styles.topSafeArea} edges={['top']}>
+        <StatusBar barStyle="light-content" backgroundColor={Colors.primaryDark} />
+        <View style={styles.headerContainer}>
+          {renderHeader()}
+          {renderGreeting()}
+        </View>
+      </SafeAreaView>
 
-      <View style={styles.headerContainer}>
-        {renderHeader()}
-        {renderGreeting()}
+      {/* Main Content */}
+      <View style={styles.contentContainer}>
+        <ScrollView
+          style={styles.content}
+          showsVerticalScrollIndicator={false}
+        >
+          <View style={styles.deliveriesHeader}>
+            <Text style={styles.sectionTitle}>Active Deliveries</Text>
+            <Text style={styles.deliveryCount}>You have 3 loads assigned</Text>
+          </View>
+
+          {activeDeliveries.map(renderDeliveryCard)}
+
+          <View style={{ height: 100 }} />
+        </ScrollView>
+
+        {renderBottomNav()}
       </View>
 
-      <ScrollView
-        style={styles.content}
-        showsVerticalScrollIndicator={false}
-      >
-        <View style={styles.deliveriesHeader}>
-          <Text style={styles.sectionTitle}>Active Deliveries</Text>
-          <Text style={styles.deliveryCount}>You have 3 loads assigned</Text>
-        </View>
-
-        {activeDeliveries.map(renderDeliveryCard)}
-
-        <View style={{ height: 100 }} />
-      </ScrollView>
-
-      {renderBottomNav()}
-    </SafeAreaView>
+      {/* Bottom SafeArea (covered by bottom nav mainly, but effectively white) */}
+      <SafeAreaView style={styles.bottomSafeArea} edges={['bottom']} />
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
+  mainContainer: {
     flex: 1,
-    backgroundColor: Colors.background,
+    backgroundColor: Colors.primaryDark, // Background for top
+  },
+  topSafeArea: {
+    flex: 0,
+    backgroundColor: Colors.primaryDark,
+  },
+  bottomSafeArea: {
+    flex: 0,
+    backgroundColor: Colors.white,
+  },
+  contentContainer: {
+    flex: 1,
+    backgroundColor: Colors.background, // Background for body
+  },
+  container: {
+    // Removed old container style
   },
   headerContainer: {
     backgroundColor: Colors.primaryDark,

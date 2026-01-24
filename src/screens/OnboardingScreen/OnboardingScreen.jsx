@@ -3,27 +3,115 @@ import { View, Text, Image, TouchableOpacity, ScrollView, Dimensions, StyleSheet
 
 const { width } = Dimensions.get('window');
 
+const onboardingData = [
+  {
+    image: require('../../assets/images/onbording1.png'),
+    title: "Take Control of Every Load",
+    desc: "Stay updated with your assigned deliveries in real-time.\nView routes, pickup and drop-off details\nall in one simple dashboard."
+  },
+  {
+    image: require('../../assets/images/onbording2.png'),
+    title: "Upload, Verify, and Hit the Road",
+    desc: "Securely upload your CDL, W-9, and insurance documents.\nOnce verified, you're ready to start\naccepting loads instantly."
+  },
+  {
+    image: require('../../assets/images/onbording3.png'),
+    title: "Deliver Loads, Get Paid Fast",
+    desc: "Complete your deliveries and receive payments directly through ACH — no paperwork, no delays, just smooth settlements."
+  },
+];
+
+const FloatingCircle = ({ top, left, right, bottom, size, colors }) => (
+  <View
+    style={[
+      styles.floatingCircle,
+      {
+        top,
+        left,
+        right,
+        bottom,
+        width: size,
+        height: size,
+        backgroundColor: colors[0],
+      }
+    ]}
+  />
+);
+
+const OnboardingPage = ({ item, index, currentPage }) => (
+  <View style={[styles.page, { width }]}>
+    <View style={styles.pageContent}>
+      <View style={styles.spacer60} />
+
+      {/* Illustration Section */}
+      <View style={styles.illustrationContainer}>
+        {/* Floating Circles */}
+        <FloatingCircle
+          top={20}
+          left={20}
+          size={16}
+          colors={['#FEE1D2', '#FA894C']}
+        />
+        <FloatingCircle
+          bottom={20}
+          right={20}
+          size={24}
+          colors={['#D3DAFD', '#3D5BF6']}
+        />
+        <FloatingCircle
+          top={10}
+          right={40}
+          size={14}
+          colors={['#E3F2FF', '#E3F2FF']}
+        />
+
+        {/* Main Image Container */}
+        <View style={styles.imageCircle}>
+          <Image
+            source={item.image}
+            style={styles.image}
+            resizeMode="cover"
+          />
+        </View>
+
+        {/* Floating Icon Badge */}
+        <View style={styles.iconBadgeOuter}>
+          <View style={styles.iconBadgeInner}>
+            <View style={styles.iconContainer}>
+              <Text style={styles.iconText}>⊞</Text>
+            </View>
+          </View>
+        </View>
+      </View>
+
+      {/* Page Indicator */}
+      <View style={styles.dotContainer}>
+        {[0, 1, 2].map((i) => (
+          <View
+            key={i}
+            style={[
+              styles.dot,
+              currentPage === i ? styles.dotActive : styles.dotInactive
+            ]}
+          />
+        ))}
+      </View>
+
+      <View style={styles.spacer40} />
+
+      {/* Text Content */}
+      <Text style={styles.title}>{item.title}</Text>
+      <View style={styles.spacer16} />
+      <Text style={styles.description}>{item.desc}</Text>
+    </View>
+  </View>
+);
+
 const OnboardingScreen = ({ navigation }) => {
   const [currentPage, setCurrentPage] = useState(0);
   const scrollViewRef = useRef(null);
 
-  const onboardingData = [
-    {
-      image: require('../../assets/images/onbording1.png'),
-      title: "Take Control of Every Load",
-      desc: "Stay updated with your assigned deliveries in real-time.\nView routes, pickup and drop-off details\nall in one simple dashboard."
-    },
-    {
-      image: require('../../assets/images/onbording2.png'),
-      title: "Upload, Verify, and Hit the Road",
-      desc: "Securely upload your CDL, W-9, and insurance documents.\nOnce verified, you're ready to start\naccepting loads instantly."
-    },
-    {
-      image: require('../../assets/images/onbording3.png'),
-      title: "Deliver Loads, Get Paid Fast",
-      desc: "Complete your deliveries and receive payments directly through ACH — no paperwork, no delays, just smooth settlements."
-    },
-  ];
+
 
   const goToLogin = () => {
     navigation.replace('RoleSelection');
@@ -46,91 +134,9 @@ const OnboardingScreen = ({ navigation }) => {
     }
   };
 
-  const FloatingCircle = ({ top, left, right, bottom, size, colors }) => (
-    <View
-      style={[
-        styles.floatingCircle,
-        {
-          top,
-          left,
-          right,
-          bottom,
-          width: size,
-          height: size,
-          backgroundColor: colors[0],
-        }
-      ]}
-    />
-  );
 
-  const renderPage = (item, index) => (
-    <View key={index} style={[styles.page, { width }]}>
-      <View style={styles.pageContent}>
-        <View style={styles.spacer60} />
 
-        {/* Illustration Section */}
-        <View style={styles.illustrationContainer}>
-          {/* Floating Circles */}
-          <FloatingCircle
-            top={20}
-            left={20}
-            size={16}
-            colors={['#FEE1D2', '#FA894C']}
-          />
-          <FloatingCircle
-            bottom={20}
-            right={20}
-            size={24}
-            colors={['#D3DAFD', '#3D5BF6']}
-          />
-          <FloatingCircle
-            top={10}
-            right={40}
-            size={14}
-            colors={['#E3F2FF', '#E3F2FF']}
-          />
 
-          {/* Main Image Container */}
-          <View style={styles.imageCircle}>
-            <Image
-              source={item.image}
-              style={styles.image}
-              resizeMode="cover"
-            />
-          </View>
-
-          {/* Floating Icon Badge */}
-          <View style={styles.iconBadgeOuter}>
-            <View style={styles.iconBadgeInner}>
-              <View style={styles.iconContainer}>
-                <Text style={styles.iconText}>⊞</Text>
-              </View>
-            </View>
-          </View>
-        </View>
-
-        {/* Page Indicator */}
-        <View style={styles.dotContainer}>
-          {[0, 1, 2].map((i) => (
-            <View
-              key={i}
-              style={[
-                styles.dot,
-                currentPage === i ? styles.dotActive : styles.dotInactive
-              ]}
-            />
-          ))}
-        </View>
-
-        <View style={styles.spacer40} />
-
-        {/* Text Content */}
-        <Text style={styles.title}>{item.title}</Text>
-        <View style={styles.spacer16} />
-        <Text style={styles.description}>{item.desc}</Text>
-      </View>
-    </View>
-  );
 
   return (
     <View style={styles.container}>
@@ -144,7 +150,14 @@ const OnboardingScreen = ({ navigation }) => {
           scrollEventThrottle={16}
           style={styles.scrollView}
         >
-          {onboardingData.map((item, index) => renderPage(item, index))}
+          {onboardingData.map((item, index) => (
+            <OnboardingPage
+              key={index}
+              item={item}
+              index={index}
+              currentPage={currentPage}
+            />
+          ))}
         </ScrollView>
 
         <View style={styles.bottomControls}>
