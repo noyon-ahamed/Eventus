@@ -9,13 +9,14 @@ import {
   SafeAreaView,
   StatusBar,
 } from 'react-native';
+import Icon from 'react-native-vector-icons/Ionicons';
 import { Colors, FontSizes, Spacing, BorderRadius } from '../../constants/colors';
 
 const LoadDetailScreen = ({ navigation }: any) => {
   const loadData = {
     id: 'LD-2024-5847',
     status: 'Pending Pickup',
-    distance: '$245.00',
+    distance: '$245.00', // As per design image, though label says Distance and value is currency
     estimatedTime: '3h 45m',
     weight: '42000 lbs',
     ratePerMile: '$2.45',
@@ -32,126 +33,117 @@ const LoadDetailScreen = ({ navigation }: any) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar barStyle="dark-content" backgroundColor={Colors.white} />
+      <StatusBar barStyle="dark-content" backgroundColor={Colors.background} />
 
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
-          <Text style={styles.backIcon}>←</Text>
+          <Icon name="arrow-back" size={24} color={Colors.black} />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Load Detail</Text>
         <View style={styles.placeholder} />
       </View>
 
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
-        <View style={styles.card}>
-          <View style={styles.loadHeader}>
-            <View style={styles.loadIdContainer}>
-              <Text style={styles.truckIcon}>📦</Text>
-              <View>
-                <Text style={styles.loadIdLabel}>Load ID</Text>
-                <Text style={styles.loadId}>{loadData.id}</Text>
-              </View>
+        {/* Load ID Card */}
+        <View style={styles.idCard}>
+          <View style={styles.idHeader}>
+            <View style={styles.idIconContainer}>
+              <Icon name="cube-outline" size={24} color={Colors.black} />
             </View>
-            <View style={styles.statusBadge}>
-              <Text style={styles.statusText}>{loadData.status}</Text>
+            <View>
+              <Text style={styles.idLabel}>Load ID</Text>
+              <Text style={styles.idValue}>{loadData.id}</Text>
+            </View>
+          </View>
+          <View style={styles.statusBadge}>
+            <Text style={styles.statusText}>{loadData.status}</Text>
+          </View>
+        </View>
+
+        {/* Dark Details Card */}
+        <View style={styles.detailsCard}>
+          <View style={styles.mainStats}>
+            <View>
+              <Text style={styles.statLabel}>Distance</Text>
+              <Text style={styles.statValueLarge}>{loadData.distance}</Text>
+            </View>
+            <View>
+              <Text style={[styles.statLabel, { textAlign: 'right' }]}>Est. Time</Text>
+              <Text style={[styles.statValueLarge, { textAlign: 'right' }]}>{loadData.estimatedTime}</Text>
             </View>
           </View>
 
-          <View style={styles.statsContainer}>
-            <View style={styles.statRow}>
-              <View style={styles.statItem}>
-                <Text style={styles.statLabel}>Distance</Text>
-                <Text style={styles.statValue}>{loadData.distance}</Text>
-              </View>
-              <View style={styles.statItem}>
-                <Text style={styles.statLabel}>Est. Time</Text>
-                <Text style={styles.statValue}>{loadData.estimatedTime}</Text>
-              </View>
+          <View style={styles.gridStats}>
+            <View style={styles.gridItem}>
+              <Text style={styles.gridLabel}>Weight</Text>
+              <Text style={styles.gridValue}>{loadData.weight}</Text>
             </View>
-
-            <View style={styles.statsGrid}>
-              <View style={styles.gridItem}>
-                <Text style={styles.gridLabel}>Weight</Text>
-                <Text style={styles.gridValue}>{loadData.weight}</Text>
-              </View>
-              <View style={styles.gridItem}>
-                <Text style={styles.gridLabel}>Rate/Mile</Text>
-                <Text style={styles.gridValue}>{loadData.ratePerMile}</Text>
-              </View>
-              <View style={styles.gridItem}>
-                <Text style={styles.gridLabel}>Total</Text>
-                <Text style={styles.gridValue}>{loadData.total}</Text>
-              </View>
+            <View style={styles.gridItem}>
+              <Text style={styles.gridLabel}>Rate/Mile</Text>
+              <Text style={styles.gridValue}>{loadData.ratePerMile}</Text>
+            </View>
+            <View style={styles.gridItem}>
+              <Text style={styles.gridLabel}>Total</Text>
+              <Text style={styles.gridValue}>{loadData.total}</Text>
             </View>
           </View>
         </View>
 
+        {/* Pickup Location */}
         <View style={styles.locationCard}>
           <View style={styles.locationHeader}>
-            <Text style={styles.locationIcon}>📍</Text>
+            <Icon name="location-outline" size={24} color={Colors.black} style={styles.locationIcon} />
             <View style={styles.locationInfo}>
               <Text style={styles.locationLabel}>Pickup</Text>
               <Text style={styles.locationAddress}>{loadData.pickup.location}</Text>
             </View>
           </View>
+          <View style={styles.divider} />
           <View style={styles.timeContainer}>
-            <Text style={styles.timeIcon}>🕐</Text>
+            <Icon name="time-outline" size={18} color={Colors.orange} />
             <Text style={styles.timeText}>{loadData.pickup.time}</Text>
           </View>
         </View>
 
+        {/* Delivery Location */}
         <View style={styles.locationCard}>
           <View style={styles.locationHeader}>
-            <Text style={styles.locationIcon}>📍</Text>
+            <Icon name="location-outline" size={24} color={Colors.black} style={styles.locationIcon} />
             <View style={styles.locationInfo}>
               <Text style={styles.locationLabel}>Delivery Location</Text>
               <Text style={styles.locationAddress}>{loadData.delivery.location}</Text>
             </View>
           </View>
+          <View style={styles.divider} />
           <View style={styles.timeContainer}>
-            <Text style={styles.timeIcon}>🕐</Text>
+            <Icon name="time-outline" size={18} color={Colors.orange} />
             <Text style={styles.timeText}>{loadData.delivery.time}</Text>
           </View>
         </View>
 
-        <TouchableOpacity 
-          style={styles.primaryButton}
-          onPress={() => navigation.navigate('TripStatus')}
-        >
-          <Text style={styles.primaryButtonText}>Mark the Delivery</Text>
-        </TouchableOpacity>
+        {/* Action Buttons */}
+        <View style={styles.actionsContainer}>
+          <TouchableOpacity
+            style={styles.primaryButton}
+            onPress={() => navigation.navigate('TripStatus')}
+          >
+            <Text style={styles.primaryButtonText}>Mark the Delivery</Text>
+          </TouchableOpacity>
 
-        <TouchableOpacity 
-          style={styles.secondaryButton}
-          onPress={() => {}}
-        >
-          <Text style={styles.secondaryButtonText}>Start Navigation</Text>
-        </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.secondaryButton}
+            onPress={() => { }}
+          >
+            <Text style={styles.secondaryButtonText}>Start Navigation</Text>
+          </TouchableOpacity>
 
-        <TouchableOpacity style={styles.linkButton}>
-          <Text style={styles.linkButtonText}>View BOL</Text>
-        </TouchableOpacity>
+          <TouchableOpacity style={styles.linkButton}>
+            <Text style={styles.linkButtonText}>View BOL</Text>
+          </TouchableOpacity>
+        </View>
 
-        <View style={{ height: 100 }} />
+        <View style={{ height: 40 }} />
       </ScrollView>
-
-      <View style={styles.bottomNav}>
-        <TouchableOpacity style={styles.navItem} onPress={() => navigation.navigate('Dashboard')}>
-          <Text style={styles.navIcon}>🏠</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.navItem}>
-          <Text style={styles.navIcon}>💬</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.navItem}>
-          <Text style={styles.navIcon}>🔔</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={[styles.navItem, styles.navItemActive]}>
-          <Text style={[styles.navIcon, styles.navIconActive]}>💳</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.navItem}>
-          <Text style={styles.navIcon}>👤</Text>
-        </TouchableOpacity>
-      </View>
     </SafeAreaView>
   );
 };
@@ -167,137 +159,131 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: Spacing.md,
     paddingVertical: Spacing.md,
-    backgroundColor: Colors.white,
-    borderBottomWidth: 1,
-    borderBottomColor: Colors.border,
+    backgroundColor: Colors.white, // Or background color if transparent header
   },
   backButton: {
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: Colors.lightGray,
+    backgroundColor: Colors.white,
+    borderWidth: 1,
+    borderColor: Colors.border,
     justifyContent: 'center',
     alignItems: 'center',
   },
-  backIcon: {
-    fontSize: 24,
-    color: Colors.primaryDark,
-  },
   headerTitle: {
     fontSize: FontSizes.lg,
-    fontWeight: '600',
-    color: Colors.primaryDark,
+    fontWeight: 'bold',
+    color: Colors.black,
   },
   placeholder: {
     width: 40,
   },
   content: {
     flex: 1,
+    padding: Spacing.md,
   },
-  card: {
+  idCard: {
     backgroundColor: Colors.white,
     borderRadius: BorderRadius.lg,
     padding: Spacing.md,
-    margin: Spacing.md,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 3,
-  },
-  loadHeader: {
+    marginBottom: Spacing.md,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: Spacing.lg,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.05,
+    shadowRadius: 4,
+    elevation: 2,
   },
-  loadIdContainer: {
+  idHeader: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: Spacing.sm,
   },
-  truckIcon: {
-    fontSize: 32,
+  idIconContainer: {
+    width: 40,
+    height: 40,
+    borderRadius: 8,
+    backgroundColor: Colors.lightGray, // Or pale orange? Design looks like plain icon but let's put in container or just icon
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: Colors.border,
   },
-  loadIdLabel: {
+  idLabel: {
     fontSize: FontSizes.sm,
-    color: Colors.gray,
-    marginBottom: 2,
-  },
-  loadId: {
-    fontSize: FontSizes.md,
     fontWeight: '600',
-    color: Colors.primaryDark,
+    color: Colors.black,
+  },
+  idValue: {
+    fontSize: FontSizes.md,
+    color: Colors.gray,
+    marginTop: 2,
   },
   statusBadge: {
-    backgroundColor: Colors.orange,
+    backgroundColor: '#F77F00', // Orange color from design
     paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 6,
+    paddingVertical: 8,
+    borderRadius: 20,
   },
   statusText: {
-    fontSize: FontSizes.sm,
+    fontSize: FontSizes.xs,
     fontWeight: '600',
     color: Colors.white,
   },
-  statsContainer: {
+  detailsCard: {
     backgroundColor: Colors.primaryDark,
-    borderRadius: BorderRadius.md,
-    padding: Spacing.md,
+    borderRadius: BorderRadius.lg,
+    padding: Spacing.lg,
+    marginBottom: Spacing.md,
   },
-  statRow: {
+  mainStats: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: Spacing.md,
-    paddingBottom: Spacing.md,
-    borderBottomWidth: 1,
-    borderBottomColor: 'rgba(255, 255, 255, 0.1)',
-  },
-  statItem: {
-    flex: 1,
+    marginBottom: Spacing.lg,
   },
   statLabel: {
     fontSize: FontSizes.sm,
-    color: Colors.gray,
+    color: Colors.lightGray,
     marginBottom: 4,
   },
-  statValue: {
-    fontSize: 24,
+  statValueLarge: {
+    fontSize: 24, // 32 might be too big
     fontWeight: 'bold',
     color: Colors.white,
   },
-  statsGrid: {
+  gridStats: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    gap: Spacing.md,
   },
   gridItem: {
     flex: 1,
     backgroundColor: 'rgba(255, 255, 255, 0.1)',
-    padding: Spacing.sm,
-    borderRadius: BorderRadius.sm,
-    marginHorizontal: 2,
+    borderRadius: BorderRadius.md,
+    padding: Spacing.md,
   },
   gridLabel: {
     fontSize: FontSizes.xs,
-    color: Colors.gray,
+    color: Colors.lightGray,
     marginBottom: 4,
   },
   gridValue: {
     fontSize: FontSizes.md,
-    fontWeight: '600',
+    fontWeight: 'bold',
     color: Colors.white,
   },
   locationCard: {
     backgroundColor: Colors.white,
     borderRadius: BorderRadius.lg,
     padding: Spacing.md,
-    marginHorizontal: Spacing.md,
     marginBottom: Spacing.md,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 3,
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.05,
+    shadowRadius: 4,
+    elevation: 2,
   },
   locationHeader: {
     flexDirection: 'row',
@@ -305,8 +291,8 @@ const styles = StyleSheet.create({
     marginBottom: Spacing.sm,
   },
   locationIcon: {
-    fontSize: 24,
-    marginRight: Spacing.sm,
+    marginRight: Spacing.md,
+    marginTop: 2,
   },
   locationInfo: {
     flex: 1,
@@ -319,47 +305,47 @@ const styles = StyleSheet.create({
   locationAddress: {
     fontSize: FontSizes.md,
     fontWeight: '500',
-    color: Colors.primaryDark,
+    color: Colors.black,
     lineHeight: 22,
+  },
+  divider: {
+    height: 1,
+    backgroundColor: Colors.border,
+    marginVertical: Spacing.sm,
   },
   timeContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: Colors.lightGray,
-    padding: Spacing.sm,
-    borderRadius: BorderRadius.sm,
-  },
-  timeIcon: {
-    fontSize: 16,
-    marginRight: Spacing.xs,
+    gap: Spacing.xs,
   },
   timeText: {
     fontSize: FontSizes.sm,
     color: Colors.orange,
     fontWeight: '500',
   },
+  actionsContainer: {
+    marginTop: Spacing.md,
+  },
   primaryButton: {
-    backgroundColor: Colors.primary,
+    backgroundColor: '#D9912B', // Gold/Orange
     paddingVertical: 16,
-    borderRadius: BorderRadius.md,
+    borderRadius: BorderRadius.xl,
     alignItems: 'center',
-    marginHorizontal: Spacing.md,
     marginBottom: Spacing.md,
   },
   primaryButtonText: {
     fontSize: FontSizes.md,
-    fontWeight: '600',
+    fontWeight: 'bold',
     color: Colors.white,
   },
   secondaryButton: {
-    backgroundColor: Colors.white,
+    backgroundColor: Colors.background,
     paddingVertical: 16,
-    borderRadius: BorderRadius.md,
+    borderRadius: BorderRadius.xl,
     alignItems: 'center',
-    marginHorizontal: Spacing.md,
-    marginBottom: Spacing.md,
     borderWidth: 1,
-    borderColor: Colors.primaryDark,
+    borderColor: Colors.gray, // Outline color
+    marginBottom: Spacing.md,
   },
   secondaryButtonText: {
     fontSize: FontSizes.md,
@@ -373,30 +359,8 @@ const styles = StyleSheet.create({
   linkButtonText: {
     fontSize: FontSizes.md,
     color: Colors.primaryDark,
-    fontWeight: '500',
-  },
-  bottomNav: {
-    flexDirection: 'row',
-    backgroundColor: Colors.white,
-    paddingVertical: Spacing.sm,
-    paddingBottom: 20,
-    borderTopWidth: 1,
-    borderTopColor: Colors.border,
-  },
-  navItem: {
-    flex: 1,
-    alignItems: 'center',
-    paddingVertical: Spacing.xs,
-  },
-  navItemActive: {
-    opacity: 1,
-  },
-  navIcon: {
-    fontSize: 24,
-    opacity: 0.6,
-  },
-  navIconActive: {
-    opacity: 1,
+    fontWeight: '600',
+    marginTop: Spacing.xs,
   },
 });
 

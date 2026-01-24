@@ -35,7 +35,7 @@ const UploadDocumentsScreen = ({ navigation }: any) => {
       Alert.alert('Success', 'Documents uploaded successfully!', [
         {
           text: 'OK',
-          onPress: () => navigation.navigate('Dashboard'),
+          onPress: () => navigation.navigate('Earnings'),
         },
       ]);
     } else {

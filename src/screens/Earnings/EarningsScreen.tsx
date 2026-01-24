@@ -149,6 +149,23 @@ const EarningsScreen = ({ navigation }: any) => {
 
         <View style={{ height: 100 }} />
       </ScrollView>
+      <View style={styles.bottomNav}>
+        <TouchableOpacity style={styles.navItem} onPress={() => navigation.navigate('Dashboard')}>
+          <Text style={styles.navIcon}>🏠</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.navItem} onPress={() => navigation.navigate('Messages')}>
+          <Text style={styles.navIcon}>💬</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.navItem} onPress={() => navigation.navigate('Notifications')}>
+          <Text style={styles.navIcon}>🔔</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={[styles.navItem, styles.navItemActive]}>
+          <Text style={[styles.navIcon, styles.navIconActive]}>💳</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.navItem} onPress={() => navigation.navigate('Profile')}>
+          <Text style={styles.navIcon}>👤</Text>
+        </TouchableOpacity>
+      </View>
     </SafeAreaView>
   );
 };
@@ -204,38 +221,42 @@ const styles = StyleSheet.create({
   },
   periodSelector: {
     flexDirection: 'row',
-    backgroundColor: Colors.lightGray,
+    backgroundColor: '#D4AF37', // Gold color from image roughly
+    padding: Spacing.sm,
   },
   periodButton: {
     flex: 1,
-    paddingVertical: Spacing.md,
+    paddingVertical: Spacing.sm,
     alignItems: 'center',
-    backgroundColor: 'transparent',
+    borderRadius: BorderRadius.sm,
   },
   periodButtonActive: {
-    backgroundColor: Colors.primary,
+    backgroundColor: Colors.white,
   },
   periodText: {
     fontSize: FontSizes.sm,
     fontWeight: '500',
-    color: Colors.primaryDark,
+    color: Colors.white,
   },
   periodTextActive: {
-    color: Colors.white,
+    color: Colors.primaryDark,
     fontWeight: '600',
   },
   earningsAmount: {
     backgroundColor: Colors.primaryDark,
     padding: Spacing.lg,
     alignItems: 'flex-start',
+    paddingTop: Spacing.xl,
+    paddingBottom: Spacing.xl,
   },
   earningsLabel: {
-    fontSize: FontSizes.md,
-    color: Colors.gray,
+    fontSize: FontSizes.sm,
+    color: Colors.white,
     marginBottom: Spacing.xs,
+    opacity: 0.8,
   },
   earningsValue: {
-    fontSize: 36,
+    fontSize: 32,
     fontWeight: 'bold',
     color: Colors.white,
   },
@@ -379,6 +400,29 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     color: Colors.primaryDark,
+  },
+  bottomNav: {
+    flexDirection: 'row',
+    backgroundColor: Colors.white,
+    paddingVertical: Spacing.sm,
+    paddingBottom: 20,
+    borderTopWidth: 1,
+    borderTopColor: Colors.border,
+  },
+  navItem: {
+    flex: 1,
+    alignItems: 'center',
+    paddingVertical: Spacing.xs,
+  },
+  navItemActive: {
+    opacity: 1,
+  },
+  navIcon: {
+    fontSize: 24,
+    opacity: 0.6,
+  },
+  navIconActive: {
+    opacity: 1,
   },
 });
 

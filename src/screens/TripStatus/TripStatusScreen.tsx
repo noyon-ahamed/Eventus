@@ -10,17 +10,18 @@ import {
   StatusBar,
   TextInput,
 } from 'react-native';
+import Icon from 'react-native-vector-icons/Ionicons';
 import { Colors, FontSizes, Spacing, BorderRadius } from '../../constants/colors';
 
 const TripStatusScreen = ({ navigation }: any) => {
   const [currentStatus, setCurrentStatus] = useState(0);
-  const [note, setNote] = useState('At Pickup Location');
+  const [note, setNote] = useState('');
 
   const statusSteps = [
-    { id: 0, label: 'At Pickup\nLocation', icon: '✓', completed: true },
-    { id: 1, label: 'Loaded &\nDeparted', icon: '✓', completed: true },
-    { id: 2, label: 'Arrived at\nDrop-off', icon: '🚚', completed: false, active: true },
-    { id: 3, label: 'Delivered', icon: '○', completed: false },
+    { id: 0, label: 'At Pickup\nLocation', icon: 'checkmark-circle', completed: true },
+    { id: 1, label: 'Loaded &\nDeparted', icon: 'checkmark-circle', completed: true },
+    { id: 2, label: 'Arrived at\nDrop-off', icon: 'truck', completed: false, active: true },
+    { id: 3, label: 'Delivered', icon: 'ellipse-outline', completed: false },
   ];
 
   const handleSubmit = () => {
@@ -31,38 +32,8 @@ const TripStatusScreen = ({ navigation }: any) => {
     }
   };
 
-  const renderStatusStep = (step: any, index: number) => {
-    const isActive = step.active;
-    const isCompleted = step.completed;
+  /* Unused renderStatusStep removed */
 
-    return (
-      <View key={step.id} style={styles.stepContainer}>
-        <View
-          style={[
-            styles.stepCircle,
-            isCompleted && styles.stepCircleCompleted,
-            isActive && styles.stepCircleActive,
-          ]}
-        >
-          {isCompleted ? (
-            <Text style={styles.stepIconCompleted}>✓</Text>
-          ) : isActive ? (
-            <Text style={styles.stepIconActive}>{step.icon}</Text>
-          ) : (
-            <Text style={styles.stepIconInactive}>{step.icon}</Text>
-          )}
-        </View>
-        <Text
-          style={[
-            styles.stepLabel,
-            (isCompleted || isActive) && styles.stepLabelActive,
-          ]}
-        >
-          {step.label}
-        </Text>
-      </View>
-    );
-  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -70,43 +41,78 @@ const TripStatusScreen = ({ navigation }: any) => {
 
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
-          <Text style={styles.backIcon}>←</Text>
+          <Icon name="arrow-back" size={24} color={Colors.black} />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Trip Status</Text>
         <View style={styles.placeholder} />
       </View>
 
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
-        <View style={styles.card}>
-          <View style={styles.sectionHeader}>
-            <Text style={styles.sectionTitle}>Trip Status</Text>
-            <Text style={styles.sectionSubtitle}>Update your current trip progress</Text>
-          </View>
-
-          <View style={styles.progressContainer}>
-            {statusSteps.map((step, index) => renderStatusStep(step, index))}
-          </View>
+        <View style={styles.sectionHeader}>
+          <Text style={styles.sectionTitle}>Trip Status</Text>
+          <Text style={styles.sectionSubtitle}>Update your current trip progress</Text>
         </View>
 
-        <View style={styles.card}>
-          <Text style={styles.currentStatusTitle}>Current Status</Text>
-          <View style={styles.currentStatusBadge}>
-            <Text style={styles.currentStatusIcon}>📍</Text>
-            <Text style={styles.currentStatusText}>At Pickup Location</Text>
+        <View style={styles.progressContainer}>
+          {/* Note: Standard mapping won't easily support the "connector" between items nicely in flux row without logic. 
+                 I'll render them manually or with a hack to overlay lines, or simplified row.
+                 Design shows lines BEHIND bubbles.
+             */}
+          <View style={styles.connectorBackground}>
+            <View style={styles.connectorLineBackground} />
           </View>
+
+          {statusSteps.map((step) => (
+            <View key={step.id} style={styles.stepItem}>
+              <View
+                style={[
+                  styles.stepCircle,
+                  step.completed && styles.stepCircleCompleted,
+                  step.active && styles.stepCircleActive,
+                  !step.completed && !step.active && styles.stepCircleInactive
+                ]}
+              >
+                {step.completed ? (
+                  <Icon name="checkmark" size={16} color={Colors.white} />
+                ) : step.active ? (
+                  <Icon name="truck" size={16} color={Colors.white} />
+                ) : (
+                  // Empty ring or small dot
+                  <View />
+                )}
+              </View>
+              <Text
+                style={[
+                  styles.stepLabel,
+                  (step.completed || step.active) ? styles.stepLabelActive : {}
+                ]}
+              >
+                {step.label}
+              </Text>
+            </View>
+          ))}
         </View>
 
-        <View style={styles.card}>
+        <Text style={styles.currentStatusTitle}>Current Status</Text>
+        <View style={styles.currentStatusBadge}>
+          <Icon name="location-sharp" size={24} color={Colors.primaryDark} />
+          <Text style={styles.currentStatusText}>At Pickup Location</Text>
+        </View>
+
+        <View style={styles.formContainer}>
           <Text style={styles.inputLabel}>Delivery Note:</Text>
-          <TextInput
-            style={styles.textInput}
-            value={note}
-            onChangeText={setNote}
-            placeholder="At Pickup Location"
-            multiline
-            numberOfLines={4}
-            textAlignVertical="top"
-          />
+          <View style={styles.textAreaContainer}>
+            <TextInput
+              style={styles.textInput}
+              value={note}
+              onChangeText={setNote}
+              placeholder="At Pickup Location"
+              placeholderTextColor={Colors.gray}
+              multiline
+              numberOfLines={4}
+              textAlignVertical="top"
+            />
+          </View>
         </View>
 
         <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
@@ -131,48 +137,34 @@ const styles = StyleSheet.create({
     paddingHorizontal: Spacing.md,
     paddingVertical: Spacing.md,
     backgroundColor: Colors.white,
-    borderBottomWidth: 1,
-    borderBottomColor: Colors.border,
   },
   backButton: {
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: Colors.lightGray,
+    backgroundColor: Colors.white,
+    borderWidth: 1,
+    borderColor: Colors.border,
     justifyContent: 'center',
     alignItems: 'center',
   },
-  backIcon: {
-    fontSize: 24,
-    color: Colors.primaryDark,
-  },
   headerTitle: {
     fontSize: FontSizes.lg,
-    fontWeight: '600',
-    color: Colors.primaryDark,
+    fontWeight: 'bold',
+    color: Colors.black,
   },
   placeholder: {
     width: 40,
   },
   content: {
     flex: 1,
-  },
-  card: {
-    backgroundColor: Colors.white,
-    borderRadius: BorderRadius.lg,
     padding: Spacing.lg,
-    margin: Spacing.md,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 3,
   },
   sectionHeader: {
     marginBottom: Spacing.lg,
   },
   sectionTitle: {
-    fontSize: FontSizes.lg,
+    fontSize: FontSizes.xl,
     fontWeight: 'bold',
     color: Colors.primaryDark,
     marginBottom: Spacing.xs,
@@ -185,99 +177,124 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'flex-start',
+    marginBottom: Spacing.xl,
+    position: 'relative',
+    paddingHorizontal: Spacing.xs,
   },
-  stepContainer: {
+  connectorBackground: {
+    position: 'absolute',
+    top: 20, // Half of circle height (40/2)
+    left: 40, // Offset to start after first circle roughly
+    right: 40, // End before last circle roughly
+    height: 4,
+    zIndex: -1,
+    flexDirection: 'row',
+  },
+  connectorLineBackground: {
     flex: 1,
+    height: 4,
+    backgroundColor: Colors.lightGray, // Base gray line
+    // Realistically we'd need segments to color them green. 
+    // For now, simple gray background line is acceptable or simple implementation.
+  },
+  stepItem: {
     alignItems: 'center',
+    width: 70,
   },
   stepCircle: {
-    width: 56,
-    height: 56,
-    borderRadius: 28,
-    backgroundColor: Colors.lightGray,
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: Colors.white,
+    borderWidth: 2,
+    borderColor: Colors.lightGray,
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: Spacing.sm,
-    borderWidth: 2,
-    borderColor: Colors.border,
+    zIndex: 1,
   },
   stepCircleCompleted: {
     backgroundColor: Colors.green,
     borderColor: Colors.green,
   },
-  stepCircleActive: {
-    backgroundColor: Colors.primary,
-    borderColor: Colors.primary,
+  stepCircleActive: { // The design shows Orange icon background (truck)
+    backgroundColor: '#F77F00', // Orange
+    borderColor: '#F77F00',
   },
-  stepIconCompleted: {
-    fontSize: 24,
-    color: Colors.white,
+  stepCircleInactive: {
+    borderColor: Colors.lightGray, // hollow circle
+    backgroundColor: Colors.white,
+    borderWidth: 4, // Thicker border for donut effect
   },
-  stepIconActive: {
-    fontSize: 24,
-    color: Colors.white,
-  },
-  stepIconInactive: {
-    fontSize: 24,
-    color: Colors.gray,
+  inactiveDot: {
+    // nothing inside
   },
   stepLabel: {
-    fontSize: FontSizes.xs,
+    fontSize: 10,
     color: Colors.gray,
     textAlign: 'center',
-    lineHeight: 16,
+    lineHeight: 14,
   },
   stepLabelActive: {
     color: Colors.primaryDark,
-    fontWeight: '600',
+    fontWeight: 'bold',
   },
   currentStatusTitle: {
     fontSize: FontSizes.md,
-    fontWeight: '600',
-    color: Colors.primaryDark,
-    marginBottom: Spacing.md,
+    fontWeight: 'bold',
+    color: Colors.black, // "Current Status" is black/dark
+    marginBottom: 8,
   },
   currentStatusBadge: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: Colors.primaryLight,
-    padding: Spacing.md,
+    backgroundColor: '#E8F1FC', // Light blue
+    padding: Spacing.lg,
     borderRadius: BorderRadius.md,
-    gap: Spacing.sm,
-  },
-  currentStatusIcon: {
-    fontSize: 24,
+    gap: Spacing.md,
+    marginBottom: Spacing.xl,
   },
   currentStatusText: {
     fontSize: FontSizes.md,
     fontWeight: '600',
     color: Colors.primaryDark,
   },
+  formContainer: {
+    backgroundColor: Colors.white,
+    borderRadius: BorderRadius.lg,
+    padding: Spacing.lg,
+    marginBottom: Spacing.xl,
+    // Design shows input inside a white card-like area
+  },
   inputLabel: {
     fontSize: FontSizes.md,
     fontWeight: '600',
-    color: Colors.primaryDark,
-    marginBottom: Spacing.sm,
+    color: Colors.black,
+    marginBottom: Spacing.md,
   },
-  textInput: {
+  textAreaContainer: {
     backgroundColor: Colors.lightGray,
     borderRadius: BorderRadius.md,
-    padding: Spacing.md,
+    padding: Spacing.sm,
+    height: 120,
+    borderWidth: 1,
+    borderColor: Colors.border,
+  },
+  textInput: {
+    flex: 1,
     fontSize: FontSizes.md,
     color: Colors.primaryDark,
-    minHeight: 100,
   },
   submitButton: {
-    backgroundColor: Colors.primary,
-    paddingVertical: 16,
-    borderRadius: BorderRadius.md,
+    backgroundColor: '#D9912B', // Gold/Orange
+    paddingVertical: 18,
+    borderRadius: BorderRadius.xl,
     alignItems: 'center',
-    marginHorizontal: Spacing.md,
-    marginTop: Spacing.md,
+    marginBottom: Spacing.md,
   },
   submitButtonText: {
     fontSize: FontSizes.md,
-    fontWeight: '600',
+    fontWeight: 'bold',
     color: Colors.white,
   },
 });

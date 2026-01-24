@@ -1,27 +1,31 @@
 // src/components/DrawerMenu.tsx
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
   StyleSheet,
   TouchableOpacity,
   ScrollView,
-  SafeAreaView,
-  StatusBar,
+  Switch,
+  Image,
 } from 'react-native';
-import { Colors, FontSizes, Spacing, BorderRadius } from '../constants/colors';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import Icon from 'react-native-vector-icons/Ionicons';
+import { Colors, FontSizes, Spacing } from '../constants/colors';
 
 const DrawerMenu = ({ navigation }: any) => {
+  const [isDarkMode, setIsDarkMode] = useState(false);
+
   const menuItems = [
-    { id: 'home', label: 'Home (Dashboard)', icon: '🏠', screen: 'Dashboard' },
-    { id: 'loads', label: 'My Loads', icon: '📦', screen: 'MyLoads' },
-    { id: 'earnings', label: 'Earnings & Settlements', icon: '💰', screen: 'Earnings' },
-    { id: 'messages', label: 'Messages', icon: '💬', screen: 'Messages' },
-    { id: 'notifications', label: 'Notifications', icon: '🔔', screen: 'Notifications' },
-    { id: 'compliance', label: 'Compliance Status', icon: '✅', screen: 'Compliance' },
-    { id: 'support', label: 'Support / Help Center', icon: '❓', screen: 'Support' },
-    { id: 'profile', label: 'Profile', icon: '👤', screen: 'Profile' },
-    { id: 'settings', label: 'Settings', icon: '⚙️', screen: 'Settings' },
+    { id: 'home', label: 'Home (Dashboard)', icon: 'home-outline', screen: 'Dashboard' },
+    { id: 'loads', label: 'My Loads', icon: 'cube-outline', screen: 'MyLoads' },
+    { id: 'earnings', label: 'Earnings & Settlements', icon: 'cash-outline', screen: 'Earnings' },
+    { id: 'messages', label: 'Messages', icon: 'chatbubble-ellipses-outline', screen: 'Messages' },
+    { id: 'notifications', label: 'Notifications', icon: 'notifications-outline', screen: 'Notifications' },
+    { id: 'compliance', label: 'Compliance Status', icon: 'shield-checkmark-outline', screen: 'Compliance' },
+    { id: 'support', label: 'Support / Help Center', icon: 'help-circle-outline', screen: 'Support' },
+    { id: 'profile', label: 'Profile', icon: 'person-outline', screen: 'Profile' },
+    { id: 'settings', label: 'Settings', icon: 'settings-outline', screen: 'Settings' },
   ];
 
   const handleNavigation = (screen: string) => {
@@ -30,133 +34,116 @@ const DrawerMenu = ({ navigation }: any) => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <StatusBar barStyle="light-content" backgroundColor={Colors.primaryDark} />
-
-      <View style={styles.header}>
-        <View style={styles.profileSection}>
-          <View style={styles.avatar}>
-            <Text style={styles.avatarText}>👤</Text>
+    <View style={styles.container}>
+      {/* Header Section */}
+      <SafeAreaView style={styles.headerSafeArea}>
+        <View style={styles.headerContent}>
+          <View style={styles.profileSection}>
+            <Image
+              source={{ uri: 'https://i.pravatar.cc/150?u=numan' }} // Placeholder image
+              style={styles.avatar}
+            />
+            <View style={styles.verifiedBadge}>
+              <Icon name="checkmark" size={12} color={Colors.white} />
+            </View>
           </View>
-          <View style={styles.verifiedBadge}>
-            <Text style={styles.verifiedIcon}>✓</Text>
+          <View style={styles.userInfo}>
+            <Text style={styles.userName}>Numan Zafar</Text>
+            <Text style={styles.userEmail}>dumm@gmail.com</Text>
           </View>
         </View>
-        <Text style={styles.userName}>Numan Zafar</Text>
-        <Text style={styles.userEmail}>dumm@gmail.com</Text>
-      </View>
+      </SafeAreaView>
 
-      <View style={styles.darkModeToggle}>
-        <Text style={styles.darkModeIcon}>🌙</Text>
-        <Text style={styles.darkModeText}>Dark mode</Text>
-        <View style={styles.toggle}>
-          <View style={styles.toggleCircle} />
-        </View>
-      </View>
+      {/* Menu Section */}
+      <View style={styles.menuWrapper}>
+        <ScrollView style={styles.menuContainer} showsVerticalScrollIndicator={false}>
+          {/* Dark Mode Toggle */}
+          <View style={styles.menuItem}>
+            <Icon name="moon-outline" size={24} color={Colors.black} style={styles.menuIcon} />
+            <Text style={styles.menuText}>Dark mode</Text>
+            <Switch
+              value={isDarkMode}
+              onValueChange={setIsDarkMode}
+              trackColor={{ false: Colors.lightGray, true: Colors.primary }}
+              thumbColor={Colors.white}
+              style={{ transform: [{ scaleX: 0.8 }, { scaleY: 0.8 }] }}
+            />
+          </View>
 
-      <ScrollView style={styles.menuContainer} showsVerticalScrollIndicator={false}>
-        {menuItems.map((item) => (
-          <TouchableOpacity
-            key={item.id}
-            style={styles.menuItem}
-            onPress={() => handleNavigation(item.screen)}
-          >
-            <Text style={styles.menuIcon}>{item.icon}</Text>
-            <Text style={styles.menuText}>{item.label}</Text>
+          {menuItems.map((item) => (
+            <TouchableOpacity
+              key={item.id}
+              style={styles.menuItem}
+              onPress={() => handleNavigation(item.screen)}
+            >
+              <Icon name={item.icon} size={24} color={Colors.black} style={styles.menuIcon} />
+              <Text style={styles.menuText}>{item.label}</Text>
+            </TouchableOpacity>
+          ))}
+
+          <TouchableOpacity style={styles.logoutButton} onPress={() => console.log('Logout')}>
+            <Icon name="log-out-outline" size={24} color={Colors.red} style={styles.menuIcon} />
+            <Text style={styles.logoutText}>Logout</Text>
           </TouchableOpacity>
-        ))}
-
-        <TouchableOpacity style={styles.logoutButton}>
-          <Text style={styles.logoutIcon}>🚪</Text>
-          <Text style={styles.logoutText}>Logout</Text>
-        </TouchableOpacity>
-      </ScrollView>
-    </SafeAreaView>
+        </ScrollView>
+      </View>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: Colors.primaryDark, // Header background
+  },
+  headerSafeArea: {
     backgroundColor: Colors.primaryDark,
   },
-  header: {
+  headerContent: {
     padding: Spacing.lg,
+    flexDirection: 'row',
     alignItems: 'center',
-    borderBottomWidth: 1,
-    borderBottomColor: 'rgba(255, 255, 255, 0.1)',
   },
   profileSection: {
     position: 'relative',
-    marginBottom: Spacing.md,
+    marginRight: Spacing.md,
   },
   avatar: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
-    backgroundColor: Colors.lightGray,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  avatarText: {
-    fontSize: 40,
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    backgroundColor: Colors.gray,
   },
   verifiedBadge: {
     position: 'absolute',
     bottom: 0,
     right: 0,
-    width: 24,
-    height: 24,
-    borderRadius: 12,
+    width: 20,
+    height: 20,
+    borderRadius: 10,
     backgroundColor: Colors.green,
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 2,
     borderColor: Colors.primaryDark,
   },
-  verifiedIcon: {
-    fontSize: 12,
-    color: Colors.white,
+  userInfo: {
+    justifyContent: 'center',
   },
   userName: {
-    fontSize: FontSizes.xl,
+    fontSize: FontSizes.lg,
     fontWeight: 'bold',
     color: Colors.white,
-    marginBottom: Spacing.xs,
+    marginBottom: 4,
   },
   userEmail: {
     fontSize: FontSizes.sm,
     color: Colors.gray,
   },
-  darkModeToggle: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: Spacing.md,
-    borderBottomWidth: 1,
-    borderBottomColor: 'rgba(255, 255, 255, 0.1)',
-  },
-  darkModeIcon: {
-    fontSize: 20,
-    marginRight: Spacing.sm,
-  },
-  darkModeText: {
+  menuWrapper: {
     flex: 1,
-    fontSize: FontSizes.md,
-    color: Colors.white,
-    fontWeight: '500',
-  },
-  toggle: {
-    width: 48,
-    height: 28,
-    borderRadius: 14,
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
-    padding: 2,
-  },
-  toggleCircle: {
-    width: 24,
-    height: 24,
-    borderRadius: 12,
     backgroundColor: Colors.white,
+    borderTopLeftRadius: 0, // Design doesn't seem to have curved top corners for the sheet, looks straight
   },
   menuContainer: {
     flex: 1,
@@ -165,33 +152,32 @@ const styles = StyleSheet.create({
   menuItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: Spacing.md,
+    paddingVertical: Spacing.md,
     paddingHorizontal: Spacing.lg,
   },
   menuIcon: {
-    fontSize: 24,
     marginRight: Spacing.md,
+    width: 24, // Fixed width for alignment
+    textAlign: 'center',
   },
   menuText: {
+    flex: 1,
     fontSize: FontSizes.md,
-    color: Colors.white,
+    color: Colors.black,
     fontWeight: '500',
   },
   logoutButton: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: Spacing.md,
+    paddingVertical: Spacing.md,
     paddingHorizontal: Spacing.lg,
     marginTop: Spacing.lg,
-  },
-  logoutIcon: {
-    fontSize: 24,
-    marginRight: Spacing.md,
+    marginBottom: Spacing.xl,
   },
   logoutText: {
     fontSize: FontSizes.md,
     color: Colors.red,
-    fontWeight: '600',
+    fontWeight: '500',
   },
 });
 
